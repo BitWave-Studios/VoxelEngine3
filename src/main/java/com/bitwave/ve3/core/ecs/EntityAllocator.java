@@ -16,7 +16,7 @@ public class EntityAllocator {
             return new Entity(index, generations.get(index));
         }
         int index = generations.size();
-        generations.add(index);
+        generations.add(0);
         return new Entity(index, 0);
     }
 
