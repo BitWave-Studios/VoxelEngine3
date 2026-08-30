@@ -69,12 +69,12 @@ public class ComponentStore<T extends Component> {
         return size;
     }
 
-    Entity[] denseEntities() {
+    public Entity[] denseEntities() {
         return denseToEntity;
     }
 
     @SuppressWarnings("unchecked")
-    T[] denseComponents() {
+    public T[] denseComponents() {
         return (T[]) dense;
     }
 
