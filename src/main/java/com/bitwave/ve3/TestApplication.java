@@ -1,8 +1,15 @@
 package com.bitwave.ve3;
 
 import com.bitwave.ve3.core.ecs.*;
+import com.bitwave.ve3.core.ecs.component.ActiveCamera;
+import com.bitwave.ve3.core.ecs.component.Camera;
+import com.bitwave.ve3.core.ecs.component.MeshRenderer;
+import com.bitwave.ve3.core.ecs.component.Transform;
 import com.bitwave.ve3.platform.Application;
 import com.bitwave.ve3.platform.Window;
+import com.bitwave.ve3.render.*;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -12,54 +19,64 @@ import static org.lwjgl.opengl.GL11.*;
 public class TestApplication implements Application {
     private World world;
     private Scheduler scheduler;
-
-    record Position(float x, float y) implements Component {}
-    record Velocity(float dx, float dy) implements Component {}
-
-    static class MovementSystem implements ECSSystem {
-        @Override
-        public void update(World world, float delta) {
-            world.query(Position.class, Velocity.class).forEach((entity, pos, vel) -> {
-                Position updated = new Position(
-                        pos.x() + vel.dx() * delta,
-                        pos.y() + vel.dy() * delta
-                );
-                world.add(entity, updated);
-            });
-        }
-    }
+    private Renderer renderer;
+    private RenderExtractor extractor;
+    private Window window;
 
     private static final String VERTEX_SRC = """
-    #version 330 core
-    layout(location = 0) in vec3 aPos;
-    uniform mat4 uModel;
-    uniform mat4 uView;
-    uniform mat4 uProjection;
-    void main() {
-        gl_Position = uProjection * uView * uModel * vec4(aPos, 1.0);
-    }
-    """;
+            #version 330 core
+            layout(location = 0) in vec3 aPos;
+            uniform mat4 uModel;
+            uniform mat4 uView;
+            uniform mat4 uProjection;
+            void main() {
+                gl_Position = uProjection * uView * uModel * vec4(aPos, 1.0);
+            }
+            """;
 
     private static final String FRAGMENT_SRC = """
-    #version 330 core
-    out vec4 FragColor;
-    uniform vec3 uColor;
-    void main() {
-        FragColor = vec4(uColor, 1.0);
-    }
-    """;
+            #version 330 core
+            out vec4 FragColor;
+            uniform vec3 uColor;
+            void main() {
+                FragColor = vec4(uColor, 1.0);
+            }
+            """;
 
     @Override
     public void init(Window window) {
+        this.window = window;
         world = new World();
         scheduler = new Scheduler();
-        scheduler.add(new MovementSystem());
+        renderer = new Renderer();
+        extractor = new RenderExtractor();
 
-        Entity e = world.spawn();
-        world.add(e, new Position(0, 0));
-        world.add(e, new Velocity(1, 0));
+        Shader shader = new Shader(VERTEX_SRC, FRAGMENT_SRC);
+        ShaderHandle shaderHandle = renderer.registerShader(shader);
 
-        glClearColor(0.1f, 0.1f, 0.15f, 1.0f);
+        Material material = new Material(shaderHandle, 0.9f, 0.4f, 0.2f);
+        MaterialHandle materialHandle = renderer.registerMaterial(material);
+
+        float[] triangleVerts = {
+                0.0f, 0.5f, 0.0f,
+               -0.5f, -0.5f, 0.0f,
+                0.5f, -0.5f, 0.0f,
+        };
+        Mesh mesh = new Mesh(triangleVerts);
+        MeshHandle meshHandle = renderer.registerMesh(mesh);
+
+        Entity triangle = world.spawn();
+        world.add(triangle, Transform.identity());
+        world.add(triangle, new MeshRenderer(meshHandle, materialHandle));
+
+        Entity camera = world.spawn();
+        world.add(camera, new Transform(
+                new Vector3f(0, 0, 3),
+                new Quaternionf(),
+                new Vector3f(1, 1, 1)
+        ));
+        world.add(camera, Camera.perspectiveDefault());
+        world.add(camera, new ActiveCamera());
     }
 
     @Override
@@ -69,12 +86,13 @@ public class TestApplication implements Application {
 
     @Override
     public void render(float alpha) {
-        glClear(GL_COLOR_BUFFER_BIT);
-        // TODO: Real render handling (later)
+        float aspectRatio = (float) window.width() / (float) window.height();
+        RenderSnapshot snapshot = extractor.extract(world, aspectRatio);
+        renderer.render(snapshot);
     }
 
     @Override
     public void shutdown() {
-        // No cleanup tasks yet
+        // TODO: Resource cleanup comes after registries support iteration/disposal (later)
     }
 }
