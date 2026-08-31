@@ -29,6 +29,26 @@ public class TestApplication implements Application {
         }
     }
 
+    private static final String VERTEX_SRC = """
+    #version 330 core
+    layout(location = 0) in vec3 aPos;
+    uniform mat4 uModel;
+    uniform mat4 uView;
+    uniform mat4 uProjection;
+    void main() {
+        gl_Position = uProjection * uView * uModel * vec4(aPos, 1.0);
+    }
+    """;
+
+    private static final String FRAGMENT_SRC = """
+    #version 330 core
+    out vec4 FragColor;
+    uniform vec3 uColor;
+    void main() {
+        FragColor = vec4(uColor, 1.0);
+    }
+    """;
+
     @Override
     public void init(Window window) {
         world = new World();
