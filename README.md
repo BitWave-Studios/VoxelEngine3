@@ -55,11 +55,14 @@ experimenting in the older projects, and I'm confident that this will be the pol
 
 ---
 
-## Website
-Legacy Docs: `docs.bitwave-studios.com`*
+## Repository Breakdown
 
-*A new documentation site will soon replace this, including a better format and overall site for the project.
-There is no expected date for release of this.
+- `ve3.core` - Core engine functionality
+  - ECS, math, voxel world, chunking, meshing, physics, serialization, game loop
+- `ve3.facet` - Rendering API and interface, shader abstraction
+- `ve3.demo` - Demo game, showcasing engine features and capabilities
+- `ve3.tools` - Editor utilities, debug overlays, profiling, asset tools
+- `ve3.lwjgl3` - GLFW/OpenGL, desktop input, audio bindings
 
 ---
 
@@ -68,7 +71,7 @@ This project, along with any connected sub-projects like the website, docs or an
 subject to the MIT license.
 
 ```
-Copyright © 2026 Leokayasen
+Copyright © 2026 Kai Leopold
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
 documentation files (the “Software”), to deal in the Software without restriction, including without 
