@@ -18,6 +18,7 @@ import static org.lwjgl.opengl.GL30.*;
  * Small renderer that draws coloured cubes.
  */
 public class Renderer {
+    private static final boolean DEBUG_DRAW_TEST_CUBE = true;
     private Shader shader;
     private int vao;
     private int vbo;
@@ -118,7 +119,15 @@ public class Renderer {
         glUniformMatrix4fv(projLoc, false, toFloatBuffer(projection));
         glUniformMatrix4fv(viewLoc, false, toFloatBuffer(view));
         glUniformMatrix4fv(modelLoc, false, toFloatBuffer(model));
-        glUniform3f(colorLoc, 1f, 0f, 0f);
+
+        if (DEBUG_DRAW_TEST_CUBE) {
+            glUniform3f(colorLoc, 1f, 0f, 0f);
+            Matrix4f debugModel = new Matrix4f().translate(16f, 6f, 14f);
+            glUniformMatrix4fv(modelLoc, false, toFloatBuffer(debugModel));
+            glBindVertexArray(vao);
+            glDrawElements(GL_TRIANGLES, INDICES.length, GL_UNSIGNED_INT, 0);
+            glBindVertexArray(0);
+        }
 
         glBindVertexArray(vao);
         glDrawElements(GL_TRIANGLES, INDICES.length, GL_UNSIGNED_INT, 0);
@@ -136,10 +145,9 @@ public class Renderer {
     }
 
     private FloatBuffer toFloatBuffer(Matrix4f matrix) {
-        matrixBuffer.clear();
-        matrix.get(matrixBuffer);
-        matrixBuffer.flip();
-        return matrixBuffer;
+        FloatBuffer fb = BufferUtils.createFloatBuffer(16);
+        matrix.get(fb);
+        return fb;
     }
 
     public void cleanup() {
