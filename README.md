@@ -1,52 +1,40 @@
-# VoxelEngine3
+# VoxelEngine 3
 
----
-> All previous iterations of VoxelEngine are archived and unavailable as of 27/08/2026.
+A game engine for blocky, voxel based games.
+
+> You can find the development Discord server [here](https://discord.gg/6EZx8VaHWJ).
+> Join the community to stay updated on the latest news and developments.
+> Feel free to join, ask questions, invite your friends, and bring suggestions to features we may add in future.
+
 ---
 
 ## Overview
 ### What is VoxelEngine3?
 VoxelEngine is a (hint in the name) game engine for blocky, voxel based games.
+It's built in Java and uses LWJGL for OpenGL rendering, OpenAL for audio, and GLFW for window management.
 
-Initially a fun experiment to make a Minecraft-like game, that has since evolved into 
-an attempt at a fully fledged game engine. There have been 2 other iterations of the project so far, dating as
-far back as mid-2024, though none of the older versions are available as stated at the top of this readme.
+We're also using JOML for math, Nuklear for GUI, and eventually adding OpenGL ES for mobile support.
 
-VoxelEngine3, or VE3, is a culmination of the lessons learned from previous iterations and is built to be a
-better, more-complete version of the engine.
+> You can find the full list of dependencies in the [Build Script](build.gradle.kts).
 
 ### What are the requirements to use VE3?
-v1 of VE3 will support Windows x64 and x86 first. This is priority due to my own hardware using this architecture.
+Windows x64 and x86 are the first supported platforms, as this is the architecture of my desktop and main development machine.
 
-Eventually, the intention is to reach support for the following:
+As progress is made, the intention is to reach support for the following:
 
-| OS      | Natives       | Arch  |
-|---------|---------------|-------|
-| Windows | Windows x64   | x64   |
-| Windows | Windows x86   | x86   |
-| Windows | Windows arm64 | arm64 |
-| Linux   | Linux x64     | x64   |
-| Linux   | Linux x86     | x86   |
-| Linux   | Linux arm64   | arm64 |
-| Linux   | Linux arm32   | arm32 |
-| macOS   | macOS x64     | x64   |
-| macOS   | macOS arm64   | arm64 |
+| OS      | Natives       | Arch  | VE3 Version |
+|---------|---------------|-------|-------------|
+| Windows | Windows x64   | x64   | 3.0         |
+| Windows | Windows x86   | x86   | 3.0         |
+| Windows | Windows ARM64 | ARM64 | 3.5         |
+| Linux   | Linux x64     | x64   | 3.0         |
+| Linux   | Linux x86     | x86   | 3.0         |
+| Linux   | Linux ARM64   | ARM64 | 3.5         |
+| Linux   | Linux ARM32   | ARM32 | 3.5         |
+| macOS   | macOS x64     | x64   | 3.0         |
+| macOS   | macOS ARM64   | ARM64 | 3.5         |
 
----
-
-## Engine Specs
-- LWJGL 3.4.3
-- JOML v1.10.9
-- JOML Primitives v1.10.0
-- FMOD
-- FreeType
-- GLFW 
-- meshoptimizer
-- Nuklear
-- OpenAL
-- OpenCL
-- OpenGL / Vulkan (the final decision on graphics renderer hasn't been made yet)
-- stb
+We recommend using any Java SDK that supports 21 or higher, as this is the minimum version required to run VE3.
 
 ---
 
