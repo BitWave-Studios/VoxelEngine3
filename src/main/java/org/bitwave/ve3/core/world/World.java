@@ -1,43 +1,48 @@
 package org.bitwave.ve3.core.world;
 
-import org.joml.Vector3f;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
- * Small voxel storage - uses bytes for block IDs and renderer-friendly API.
+ * A simple world representation that manages chunks and blocks.
+ * @author k4i
  */
 public class World {
-    private final int sizeX, height, sizeZ;
-    private final byte[] blocks;
+    private final Map<ChunkPos, Chunk> chunks = new HashMap<>();
 
-    public World(int sizeX, int height, int sizeZ) {
-        this.sizeX = sizeX;
-        this.height = height;
-        this.sizeZ = sizeZ;
-        this.blocks = new byte[sizeX * height * sizeZ];
+    public Chunk getOrCreateChunk(int chunkX, int chunkZ) {
+        ChunkPos pos = new ChunkPos(chunkX, chunkZ);
+        return chunks.computeIfAbsent(pos, ignored -> new Chunk());
     }
 
-    private int index(int x, int y, int z) {
-        return x + sizeX * (y + height * z);
+    public void setBlock(int worldX, int worldY, int worldZ, byte id) {
+        int chunkX = worldX / Chunk.SIZE;
+        int chunkZ = worldZ / Chunk.SIZE;
+
+        int localX = worldX - chunkX * Chunk.SIZE;
+        int localZ = worldZ - chunkZ * Chunk.SIZE;
+
+        Chunk chunk = getOrCreateChunk(chunkX, chunkZ);
+        chunk.setBlock(localX, worldY, localZ, id);
     }
 
-    public void setBlock(int x, int y, int z, byte id) {
-        if (inBounds(x,y,z)) blocks[index(x,y,z)] = id;
-    }
+    public byte getBlock(int worldX, int worldY, int worldZ) {
+        int chunkX = worldX / Chunk.SIZE;
+        int chunkZ = worldZ / Chunk.SIZE;
 
-    public byte getBlock(int x, int y, int z) {
-        if (!inBounds(x,y,z)) return 0;
-        return blocks[index(x,y,z)];
+        int localX = worldX - chunkX * Chunk.SIZE;
+        int localZ = worldZ - chunkZ * Chunk.SIZE;
+
+        Chunk chunk = chunks.get(new ChunkPos(chunkX, chunkZ));
+        if (chunk == null) return 0;
+        return chunk.getBlock(localX, worldY, localZ);
     }
 
     public boolean inBounds(int x, int y, int z) {
-        return x>=0 && x<sizeX && y>=0 && y<height && z>=0 && z<sizeZ;
+        return y >= 0 && y < Chunk.HEIGHT;
     }
 
-    public int getSizeX() { return sizeX; }
-    public int getSizeZ() { return sizeZ; }
-    public int getHeight() { return height; }
-
-    public void generateFlatWorld() {
+    public void generateFlatWorld(int sizeX, int sizeZ) {
         for (int x = 0; x < sizeX; x++) {
             for (int z = 0; z < sizeZ; z++) {
                 for (int y = 0; y < 3; y++) {
@@ -51,13 +56,5 @@ public class World {
     public boolean isSolid(int x, int y, int z) {
         if (!inBounds(x,y,z)) return false;
         return getBlock(x, y, z) != 0;
-    }
-
-    public Vector3f getBlockColor(int id) {
-        return switch (id) {
-            case 1 -> new Vector3f(0.59f, 0.39f, 0.12f); // Dirt
-            case 2 -> new Vector3f(0.13f, 0.55f, 0.13f); // Grass
-            default -> new Vector3f(1f, 0f, 1f);
-        };
     }
 }
