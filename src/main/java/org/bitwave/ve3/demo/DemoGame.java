@@ -18,8 +18,8 @@ public class DemoGame {
         Renderer renderer = new Renderer();
         renderer.init();
 
-        World world = new World(32, 8, 32);
-        world.generateFlatWorld();
+        World world = new World();
+        world.generateFlatWorld(32, 32);
 
         Player player = new Player(16f, 8f, 16f, window);
         player.getCamera().setYaw(0f);
