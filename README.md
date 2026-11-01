@@ -20,22 +20,17 @@ v1 of VE3 will support Windows x64 and x86 first. This is priority due to my own
 
 Eventually, the intention is to reach support for the following:
 
-| OS      | Natives       | Arch  | Notes  |
-|---------|---------------|-------|--------|
-| Windows | Windows x64   | x64   | VE3 v1 |
-| Windows | Windows x86   | x86   | VE3 v1 |
-| Windows | Windows arm64 | arm64 | VE3 v2 |
+| OS      | Natives       | Arch  |
+|---------|---------------|-------|
+| Windows | Windows x64   | x64   |
+| Windows | Windows x86   | x86   |
+| Windows | Windows arm64 | arm64 |
 | Linux   | Linux x64     | x64   |
 | Linux   | Linux x86     | x86   |
 | Linux   | Linux arm64   | arm64 |
 | Linux   | Linux arm32   | arm32 |
 | macOS   | macOS x64     | x64   |
 | macOS   | macOS arm64   | arm64 |
-
-### What's next for VE3?
-As of 27/08/2026, the plan is to stick to VE3 as the final iteration. This means this is **THE** iteration that
-will last until the project is ended, if at all. I have learned a lot from and ups and downs of testing and 
-experimenting in the older projects, and I'm confident that this will be the polished and playable/usable engine.
 
 ---
 
@@ -52,17 +47,6 @@ experimenting in the older projects, and I'm confident that this will be the pol
 - OpenCL
 - OpenGL / Vulkan (the final decision on graphics renderer hasn't been made yet)
 - stb
-
----
-
-## Repository Breakdown
-
-- `ve3.core` - Core engine functionality
-  - ECS, math, voxel world, chunking, meshing, physics, serialization, game loop
-- `ve3.facet` - Rendering API and interface, shader abstraction
-- `ve3.demo` - Demo game, showcasing engine features and capabilities
-- `ve3.tools` - Editor utilities, debug overlays, profiling, asset tools
-- `ve3.lwjgl3` - GLFW/OpenGL, desktop input, audio bindings
 
 ---
 
