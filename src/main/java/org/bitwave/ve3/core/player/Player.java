@@ -7,6 +7,7 @@ import org.lwjgl.glfw.GLFW;
 
 /**
  * Basic Player controller with movement and simple gravity.
+ * @author k4i
  */
 public class Player {
     private final Camera camera;
