@@ -1,3 +1,5 @@
+import org.gradle.internal.os.OperatingSystem
+
 plugins {
     id("java")
     id("application")
@@ -18,6 +20,17 @@ java {
     }
 }
 
+val lwjglVersion = property("lwjglVersion") as String
+val os = OperatingSystem.current()
+val arch = System.getProperty("os.arch").lowercase()
+val lwjglNatives = when {
+    os.isMacOsX -> if (arch == "aarch64" || arch == "arm64") "natives-macos-arm64" else "natives-macos"
+    os.isLinux -> if (arch == "aarch64" || arch == "arm64") "natives-linux-arm64" else "natives-linux"
+    os.isWindows -> if (arch == "aarch64" || arch == "arm64") "natives-windows-arm64" else "natives-windows"
+    else -> throw GradleException("Unsupported OS: ${os.name}, arch: $arch")
+}
+
+
 dependencies {
     implementation("org.joml:joml:1.10.8")
 
@@ -27,10 +40,10 @@ dependencies {
     implementation("org.lwjgl:lwjgl-opengl")
     implementation("org.lwjgl:lwjgl-stb")
 
-    runtimeOnly("org.lwjgl:lwjgl::natives-windows")
-    runtimeOnly("org.lwjgl:lwjgl-glfw::natives-windows")
-    runtimeOnly("org.lwjgl:lwjgl-opengl::natives-windows")
-    runtimeOnly("org.lwjgl:lwjgl-stb::natives-windows")
+    runtimeOnly("org.lwjgl:lwjgl::$lwjglNatives")
+    runtimeOnly("org.lwjgl:lwjgl-glfw::$lwjglNatives")
+    runtimeOnly("org.lwjgl:lwjgl-opengl::$lwjglNatives")
+    runtimeOnly("org.lwjgl:lwjgl-stb::$lwjglNatives")
 
     testImplementation(platform("org.junit:junit-bom:5.11.4"))
     testImplementation("org.junit.jupiter:junit-jupiter")
