@@ -27,7 +27,7 @@ public class Player {
     private boolean cursorCaptured = true;
 
     private float verticalSpeed = 0f;
-    private final float gravity = -20f;
+    private final float gravity = -9.81f;
 
     public Player(float x, float y, float z, Window window) {
         this.window = window;
