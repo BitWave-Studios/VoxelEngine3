@@ -1,38 +1,58 @@
 package org.bitwave.ve3.demo;
 
-import org.bitwave.ve3.core.player.Player;
-import org.bitwave.ve3.core.render.Renderer;
+import org.bitwave.ve3.core.Engine;
+import org.bitwave.ve3.core.IAppLogic;
+import org.bitwave.ve3.core.graph.Mesh;
+import org.bitwave.ve3.core.render.Render;
+import org.bitwave.ve3.core.scene.Scene;
 import org.bitwave.ve3.core.window.Window;
-import org.bitwave.ve3.core.world.World;
 
 /**
  * Main entrypoint for the testbench demo game.
  * @apiNote This is a simple demo game that shows how to use the engine.
  * It is not a complete game, and is not intended to be used as a template for a game.
  */
-public class DemoGame {
+public class DemoGame implements IAppLogic {
     public static void main(String[] args) {
-        Window window = new Window(1280, 720, "VE3 Demo");
-        window.init();
+        DemoGame game = new DemoGame();
+        Engine gameEng = new Engine("VE3", new Window.WindowOptions(), game);
+        gameEng.start();
+    }
 
-        Renderer renderer = new Renderer();
-        renderer.init();
+    @Override
+    public void cleanup() {
 
-        World world = new World();
-        world.generateFlatWorld(32, 32);
+    }
 
-        Player player = new Player(16f, 8f, 16f, window);
-        player.getCamera().setYaw(0f);
-        player.getCamera().setPitch(-10f);
+    @Override
+    public void init(Window window, Scene scene, Render render) {
+        float[] positions = new float[] {
+                -0.5f, 0.5f,-1.0f,
+                -0.5f,-0.5f,-1.0f,
+                 0.5f,-0.5f,-1.0f,
+                 0.5f, 0.5f,-1.0f,
+        };
+        float[] colors = new float[] {
+                 0.5f, 0.0f, 0.0f,
+                 0.0f, 0.5f, 0.0f,
+                 0.0f, 0.0f, 0.5f,
+                 0.0f, 0.5f, 0.5f,
+        };
+        int[] indices = new int[] {
+                0, 1, 3, 3, 1, 2
+        };
 
-        while (!window.shouldClose()) {
-            window.pollEvents();
-            player.update((float) window.getDeltaTime(), world);
-            renderer.render(world, player.getCamera());
-            window.swapBuffers();
-        }
+        Mesh mesh = new Mesh(positions, colors, indices);
+        scene.addMesh("quad", mesh);
+    }
 
-        renderer.cleanup();
-        window.cleanup();
+    @Override
+    public void input(Window window, Scene scene, long diffTimeMillis) {
+
+    }
+
+    @Override
+    public void update(Window window, Scene scene, long diffTimeMillis) {
+
     }
 }
