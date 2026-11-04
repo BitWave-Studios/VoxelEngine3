@@ -33,6 +33,8 @@ val lwjglNatives = when {
 
 dependencies {
     implementation("org.joml:joml:1.10.8")
+    implementation("org.tinylog:tinylog-api:2.8.1")
+    implementation("org.tinylog:tinylog-impl:2.8.1")
 
     implementation(platform("org.lwjgl:lwjgl-bom:${property("lwjglVersion")}"))
     implementation("org.lwjgl:lwjgl")
