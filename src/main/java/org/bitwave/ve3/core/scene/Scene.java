@@ -2,6 +2,7 @@ package org.bitwave.ve3.core.scene;
 
 import org.bitwave.ve3.core.graph.Mesh;
 import org.bitwave.ve3.core.graph.Model;
+import org.bitwave.ve3.core.graph.TextureCache;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,10 +13,12 @@ import java.util.Map;
 public class Scene {
     private Map<String, Model> modelMap;
     private Projection projection;
+    private TextureCache textureCache;
 
     public Scene(int width, int height) {
         modelMap = new HashMap<>();
         projection = new Projection(width, height);
+        textureCache = new TextureCache();
     }
 
     public void addEntity(Entity entity) {
@@ -41,6 +44,10 @@ public class Scene {
 
     public Projection getProjection() {
         return projection;
+    }
+
+    public TextureCache getTextureCache() {
+        return textureCache;
     }
 
     public void resize(int width, int height) {
