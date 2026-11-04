@@ -9,8 +9,8 @@ public class MouseInput {
     private Vector2f displVec;
     private boolean inWindow;
     private boolean leftButtonPressed;
-    private boolean rightButtonPressed;
     private Vector2f previousPos;
+    private boolean rightButtonPressed;
 
     public MouseInput(long windowHandle) {
         previousPos = new Vector2f(-1, -1);
@@ -20,6 +20,10 @@ public class MouseInput {
         rightButtonPressed = false;
         inWindow = false;
 
+        glfwSetCursorPosCallback(windowHandle, (handle, xpos, ypos) -> {
+            currentPos.x = (float) xpos;
+            currentPos.y = (float) ypos;
+        });
         glfwSetCursorEnterCallback(windowHandle, (handle, entered) -> inWindow = entered);
         glfwSetMouseButtonCallback(windowHandle, (handle, button, action, mode) -> {
             leftButtonPressed = button == GLFW_MOUSE_BUTTON_1 && action == GLFW_PRESS;
@@ -43,10 +47,13 @@ public class MouseInput {
             double deltaY = currentPos.y - previousPos.y;
             boolean rotateX = deltaX != 0;
             boolean rotateY = deltaY != 0;
-            if (rotateX) displVec.y = (float) deltaX;
-            if (rotateY) displVec.x = (float) deltaY;
+            if (rotateX) {
+                displVec.y = (float) deltaX;
+            }
+            if (rotateY) {
+                displVec.x = (float) deltaY;
+            }
         }
-
         previousPos.x = currentPos.x;
         previousPos.y = currentPos.y;
     }
