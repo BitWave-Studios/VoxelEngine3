@@ -56,6 +56,18 @@ application {
     mainClass.set("org.bitwave.ve3.demo.DemoGame")
 }
 
+tasks.register("createVersionProperties") {
+    description = "Creates a version.properties file with the project version."
+    doLast {
+        val versionFile = file("src/main/resources/version.properties")
+        versionFile.writeText("engine.version=${project.version}")
+    }
+}
+
+tasks.named("processResources") {
+    dependsOn("createVersionProperties")
+}
+
 tasks.withType<JavaCompile>().configureEach {
     options.encoding = "UTF-8"
     options.compilerArgs.add("-Xlint:all")
