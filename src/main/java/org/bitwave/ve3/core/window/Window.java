@@ -1,6 +1,7 @@
 package org.bitwave.ve3.core.window;
 
 import org.bitwave.ve3.core.Engine;
+import org.bitwave.ve3.core.input.MouseInput;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.system.MemoryUtil;
@@ -20,14 +21,7 @@ public class Window {
     private int height;
     private int width;
     private Callable<Void> resizeFunc;
-
-    public static class WindowOptions {
-        public boolean compatibleProfile;
-        public int fps;
-        public int height;
-        public int width;
-        public int ups = Engine.TARGET_UPS;
-    }
+    private MouseInput mouseInput;
 
     public Window(String title, WindowOptions options, Callable<Void> resizeFunc) {
         this.resizeFunc = resizeFunc;
@@ -88,6 +82,8 @@ public class Window {
         glfwGetFramebufferSize(windowHandle, arrWidth, arrHeight);
         width = arrWidth[0];
         height = arrHeight[0];
+
+        mouseInput = new MouseInput(windowHandle);
     }
 
     public void cleanup() {
@@ -98,6 +94,10 @@ public class Window {
         if (callback != null) {
             callback.free();
         }
+    }
+
+    public MouseInput getMouseInput() {
+        return mouseInput;
     }
 
     public int getHeight() {
@@ -143,5 +143,13 @@ public class Window {
 
     public boolean windowShouldClose() {
         return glfwWindowShouldClose(windowHandle);
+    }
+
+    public static class WindowOptions {
+        public boolean compatibleProfile;
+        public int fps;
+        public int height;
+        public int width;
+        public int ups = Engine.TARGET_UPS;
     }
 }
