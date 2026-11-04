@@ -19,9 +19,9 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 public class Window {
     private final long windowHandle;
     private int height;
-    private int width;
-    private Callable<Void> resizeFunc;
     private MouseInput mouseInput;
+    private Callable<Void> resizeFunc;
+    private int width;
 
     public Window(String title, WindowOptions options, Callable<Void> resizeFunc) {
         this.resizeFunc = resizeFunc;
@@ -135,7 +135,6 @@ public class Window {
             Logger.error("Error while calling resize function", ex);
         }
     }
-
 
     public void update() {
         glfwSwapBuffers(windowHandle);
