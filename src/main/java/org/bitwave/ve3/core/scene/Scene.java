@@ -1,6 +1,5 @@
 package org.bitwave.ve3.core.scene;
 
-import org.bitwave.ve3.core.graph.Mesh;
 import org.bitwave.ve3.core.graph.Model;
 import org.bitwave.ve3.core.graph.TextureCache;
 import org.bitwave.ve3.core.player.Camera;
@@ -12,10 +11,10 @@ import java.util.Map;
  * Represents a scene in the game.
  */
 public class Scene {
+    private Camera camera;
     private Map<String, Model> modelMap;
     private Projection projection;
     private TextureCache textureCache;
-    private Camera camera;
 
     public Scene(int width, int height) {
         modelMap = new HashMap<>();
