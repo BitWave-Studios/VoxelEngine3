@@ -30,6 +30,7 @@ public class SceneRender {
         uniformsMap = new UniformsMap(shaderProgram.getProgramId());
         uniformsMap.createUniform("projectionMatrix");
         uniformsMap.createUniform("modelMatrix");
+        uniformsMap.createUniform("viewMatrix");
         uniformsMap.createUniform("txSampler");
     }
 
@@ -37,6 +38,8 @@ public class SceneRender {
         shaderProgram.bind();
 
         uniformsMap.setUniform("projectionMatrix", scene.getProjection().getProjectionMatrix());
+        uniformsMap.setUniform("viewMatrix", scene.getCamera().getViewMatrix());
+
         uniformsMap.setUniform("txSampler", 0);
 
         Collection<Model> models = scene.getModelMap().values();
