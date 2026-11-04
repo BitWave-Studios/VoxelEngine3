@@ -9,6 +9,7 @@ import org.bitwave.ve3.core.graph.Texture;
 import org.bitwave.ve3.core.render.Render;
 import org.bitwave.ve3.core.scene.Entity;
 import org.bitwave.ve3.core.scene.Scene;
+import org.bitwave.ve3.core.util.Version;
 import org.bitwave.ve3.core.window.Window;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
@@ -29,8 +30,14 @@ public class DemoGame implements IAppLogic {
     private float rotation;
 
     public static void main(String[] args) {
+        Version version = new Version();
+        try {
+            System.out.println("VE3 Version: " + version.getVersion());
+        } catch (Exception e) {
+            System.err.println("Failed to get version: " + e.getMessage());
+        }
         DemoGame game = new DemoGame();
-        Engine gameEng = new Engine("VE3", new Window.WindowOptions(), game);
+        Engine gameEng = new Engine("VE3 - " + version, new Window.WindowOptions(), game);
         gameEng.start();
     }
 
