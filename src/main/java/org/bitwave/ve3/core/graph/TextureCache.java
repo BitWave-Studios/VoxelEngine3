@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class TextureCache {
-    public static final String DEFAULT_TEXTURE = "models/tex_DebugUVTiles.png";
+    public static final String DEFAULT_TEXTURE = "models/default/tex_DebugUVTiles.png";
     private Map<String, Texture> textureMap;
 
     public TextureCache() {
