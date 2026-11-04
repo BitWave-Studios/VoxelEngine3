@@ -20,4 +20,15 @@ public class Utils {
             throw new RuntimeException("Failed to read file: " + filePath, e);
         }
     }
+
+    public static byte[] readBinaryFiles(String filePath) {
+        try (InputStream in = Utils.class.getClassLoader().getResourceAsStream(filePath)) {
+            if (in == null) {
+                throw new IllegalArgumentException("File not found: " + filePath);
+            }
+            return in.readAllBytes();
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to read file: " + filePath, e);
+        }
+    }
 }
