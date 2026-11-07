@@ -20,9 +20,10 @@ java {
     }
 }
 
-val lwjglVersion = property("lwjglVersion") as String
 val os = OperatingSystem.current()
 val arch = System.getProperty("os.arch").lowercase()
+
+val lwjglVersion = property("lwjglVersion") as String
 val lwjglNatives = when {
     os.isMacOsX -> if (arch == "aarch64" || arch == "arm64") "natives-macos-arm64" else "natives-macos"
     os.isLinux -> if (arch == "aarch64" || arch == "arm64") "natives-linux-arm64" else "natives-linux"
