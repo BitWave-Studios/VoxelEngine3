@@ -1,6 +1,7 @@
 package org.bitwave.ve3.core.render;
 
 import org.joml.Matrix4f;
+import org.joml.Vector3f;
 import org.joml.Vector4f;
 import org.lwjgl.system.MemoryStack;
 
@@ -46,5 +47,13 @@ public class UniformsMap {
 
     public void setUniform(String uniformName, int value) {
         glUniform1i(getUniformLocation(uniformName), value);
+    }
+
+    public void setUniform(String uniformName, float value) {
+        glUniform1f(getUniformLocation(uniformName), value);
+    }
+
+    public void setUniform(String uniformName, Vector3f value) {
+        glUniform3f(getUniformLocation(uniformName), value.x, value.y, value.z);
     }
 }
