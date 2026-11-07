@@ -19,13 +19,17 @@ public class Engine {
             resize();
             return null;
         });
+
         targetFps = options.fps;
         targetUps = options.ups;
+
         this.appLogic = appLogic;
         render = new Render();
         scene = new Scene(window.getWidth(), window.getHeight());
+
         appLogic.init(window, scene, render);
         running = true;
+
     }
 
     private void cleanup() {
@@ -85,5 +89,4 @@ public class Engine {
     public void stop() {
         running = false;
     }
-
 }
