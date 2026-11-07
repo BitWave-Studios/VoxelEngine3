@@ -1,65 +1,40 @@
-# VoxelEngine3
+# VoxelEngine 3
 
----
-> All previous iterations of VoxelEngine are archived and unavailable as of 27/08/2026.
+A game engine for blocky, voxel based games.
+
+> You can find the development Discord server [here](https://discord.gg/6EZx8VaHWJ).
+> Join the community to stay updated on the latest news and developments.
+> Feel free to join, ask questions, invite your friends, and bring suggestions to features we may add in future.
+
 ---
 
 ## Overview
 ### What is VoxelEngine3?
-VoxelEngine is a (hint in the name) game engine for blocky, voxel based games.
+VoxelEngine is a (hint in the name) game engine for voxel based games.
+It's built in Java and uses LWJGL for OpenGL rendering, OpenAL for audio, and GLFW for window management.
 
-Initially a fun experiment to make a Minecraft-like game, that has since evolved into 
-an attempt at a fully fledged game engine. There have been 2 other iterations of the project so far, dating as
-far back as mid-2024, though none of the older versions are available as stated at the top of this readme.
+We're also using JOML for math and eventually adding OpenGL ES for mobile support.
 
-VoxelEngine3, or VE3, is a culmination of the lessons learned from previous iterations and is built to be a
-better, more-complete version of the engine.
+> You can find the full list of dependencies in the [Build Script](build.gradle.kts).
 
 ### What are the requirements to use VE3?
-v1 of VE3 will support Windows x64 and x86 first. This is priority due to my own hardware using this architecture.
+Windows x64 and x86 are the first supported platforms, as this is the architecture of my desktop and main development machine.
 
-Eventually, the intention is to reach support for the following:
+As progress is made, the intention is to reach support for the following:
 
-| OS      | Natives       | Arch  | Notes  |
-|---------|---------------|-------|--------|
-| Windows | Windows x64   | x64   | VE3 v1 |
-| Windows | Windows x86   | x86   | VE3 v1 |
-| Windows | Windows arm64 | arm64 | VE3 v2 |
-| Linux   | Linux x64     | x64   |
-| Linux   | Linux x86     | x86   |
-| Linux   | Linux arm64   | arm64 |
-| Linux   | Linux arm32   | arm32 |
-| macOS   | macOS x64     | x64   |
-| macOS   | macOS arm64   | arm64 |
+| OS      | Natives       | Arch  | VE3 Version |
+|---------|---------------|-------|-------------|
+| Windows | Windows x64   | x64   | 3.0         |
+| Windows | Windows x86   | x86   | 3.0         |
+| Windows | Windows ARM64 | ARM64 | 3.5         |
+| Linux   | Linux x64     | x64   | 3.0         |
+| Linux   | Linux x86     | x86   | 3.0         |
+| Linux   | Linux ARM64   | ARM64 | 3.5         |
+| Linux   | Linux ARM32   | ARM32 | 3.5         |
+| macOS   | macOS x64     | x64   | 3.0         |
+| macOS   | macOS ARM64   | ARM64 | 3.5         |
 
-### What's next for VE3?
-As of 27/08/2026, the plan is to stick to VE3 as the final iteration. This means this is **THE** iteration that
-will last until the project is ended, if at all. I have learned a lot from and ups and downs of testing and 
-experimenting in the older projects, and I'm confident that this will be the polished and playable/usable engine.
-
----
-
-## Engine Specs
-- LWJGL 3.4.3
-- JOML v1.10.9
-- JOML Primitives v1.10.0
-- FMOD
-- FreeType
-- GLFW 
-- meshoptimizer
-- Nuklear
-- OpenAL
-- OpenCL
-- OpenGL / Vulkan (the final decision on graphics renderer hasn't been made yet)
-- stb
-
----
-
-## Website
-Legacy Docs: `docs.bitwave-studios.com`*
-
-*A new documentation site will soon replace this, including a better format and overall site for the project.
-There is no expected date for release of this.
+We recommend using any Java SDK that supports 21 or higher, as this is the minimum version required to run VE3.
 
 ---
 
@@ -68,7 +43,7 @@ This project, along with any connected sub-projects like the website, docs or an
 subject to the MIT license.
 
 ```
-Copyright © 2026 Leokayasen
+Copyright © 2026 Kai Leopold
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
 documentation files (the “Software”), to deal in the Software without restriction, including without 
