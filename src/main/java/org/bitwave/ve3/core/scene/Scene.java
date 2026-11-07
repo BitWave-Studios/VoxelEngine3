@@ -3,6 +3,7 @@ package org.bitwave.ve3.core.scene;
 import org.bitwave.ve3.core.graph.Model;
 import org.bitwave.ve3.core.graph.TextureCache;
 import org.bitwave.ve3.core.player.Camera;
+import org.bitwave.ve3.core.scene.lights.SceneLights;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,12 +16,14 @@ public class Scene {
     private Map<String, Model> modelMap;
     private Projection projection;
     private TextureCache textureCache;
+    private SceneLights sceneLights;
 
     public Scene(int width, int height) {
         modelMap = new HashMap<>();
         projection = new Projection(width, height);
         textureCache = new TextureCache();
         camera = new Camera();
+        sceneLights = new SceneLights();
     }
 
     public void addEntity(Entity entity) {
@@ -40,6 +43,10 @@ public class Scene {
         modelMap.values().forEach(Model::cleanup);
     }
 
+    public SceneLights getSceneLights() {
+        return sceneLights;
+    }
+
     public Camera getCamera() {
         return camera;
     }
@@ -54,6 +61,10 @@ public class Scene {
 
     public TextureCache getTextureCache() {
         return textureCache;
+    }
+
+    public void setSceneLights(SceneLights sceneLights) {
+        this.sceneLights = sceneLights;
     }
 
     public void resize(int width, int height) {
