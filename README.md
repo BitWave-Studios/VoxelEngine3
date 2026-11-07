@@ -10,10 +10,10 @@ A game engine for blocky, voxel based games.
 
 ## Overview
 ### What is VoxelEngine3?
-VoxelEngine is a (hint in the name) game engine for blocky, voxel based games.
+VoxelEngine is a (hint in the name) game engine for voxel based games.
 It's built in Java and uses LWJGL for OpenGL rendering, OpenAL for audio, and GLFW for window management.
 
-We're also using JOML for math, Nuklear for GUI, and eventually adding OpenGL ES for mobile support.
+We're also using JOML for math and eventually adding OpenGL ES for mobile support.
 
 > You can find the full list of dependencies in the [Build Script](build.gradle.kts).
 
