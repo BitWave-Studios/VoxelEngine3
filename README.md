@@ -15,6 +15,9 @@ It's built in Java and uses LWJGL for OpenGL rendering, OpenAL for audio, and GL
 
 We're also using JOML for math and eventually adding OpenGL ES for mobile support.
 
+**NOTE:** The GUI system used in this project, is entirely custom-built - this is separate to the application that will
+be released later in development.
+
 > You can find the full list of dependencies in the [Build Script](build.gradle.kts).
 
 ### What are the requirements to use VE3?
