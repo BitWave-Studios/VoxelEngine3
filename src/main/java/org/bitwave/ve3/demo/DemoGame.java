@@ -9,6 +9,7 @@ import org.bitwave.ve3.core.graph.Texture;
 import org.bitwave.ve3.core.input.MouseInput;
 import org.bitwave.ve3.core.player.Camera;
 import org.bitwave.ve3.core.render.Render;
+import org.bitwave.ve3.core.render.SceneRender;
 import org.bitwave.ve3.core.scene.Entity;
 import org.bitwave.ve3.core.scene.ModelLoader;
 import org.bitwave.ve3.core.scene.Scene;
@@ -16,10 +17,13 @@ import org.bitwave.ve3.core.util.ResourcePaths;
 import org.bitwave.ve3.core.util.Utils;
 import org.bitwave.ve3.core.util.Version;
 import org.bitwave.ve3.core.window.Window;
+import org.bitwave.ve3.gui.*;
+import org.bitwave.ve3.gui.components.Button;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,8 +37,25 @@ import static org.lwjgl.glfw.GLFW.*;
 public class DemoGame implements IAppLogic {
     private static final float MOUSE_SENSITIVITY = 0.1f;
     private static final float MOVEMENT_SPEED = 0.005f;
+
+    private static final String UI_VERTEX_SHADER = ResourcePaths.toResourcePath("shaders/gui.vert");
+    private static final String UI_FRAGMENT_SHADER = ResourcePaths.toResourcePath("shaders/gui.frag");
+
+    private final UiContext uiContext = new UiContext();
+    private final Button uiButton = new Button(uiContext);
+
+    private UiShader uiShader;
+    private UiOpenGLRenderer uiRenderer;
+
+    private boolean prevLeftMouseDown;
+    private boolean prevRightMouseDown;
+
     private Entity cube;
     private float rotation;
+
+    private SceneRender sceneRender;
+
+    private boolean wireframeEnabled;
 
     public static void main(String[] args) {
         DemoGame game = new DemoGame();
@@ -44,11 +65,19 @@ public class DemoGame implements IAppLogic {
 
     @Override
     public void cleanup() {
-        // Nothing to clean up yet
+        if (uiRenderer != null) uiRenderer.cleanup();
+        if (uiShader != null) uiShader.cleanup();
     }
 
     @Override
     public void init(Window window, Scene scene, Render render) {
+        this.sceneRender = render.getSceneRender();
+
+        uiShader = new UiShader(UI_VERTEX_SHADER, UI_FRAGMENT_SHADER);
+        uiRenderer = new UiOpenGLRenderer(uiShader);
+
+        window.getMouseInput().setUiInput(uiContext.input);
+
         Model cubeModel = ModelLoader.loadModel(
                 "cubeModel",
                 ResourcePaths.toFilePath("models/cube/cube.obj"),
@@ -63,19 +92,33 @@ public class DemoGame implements IAppLogic {
     }
 
     @Override
+    public void renderGui(Window window, Scene scene) {
+        uiRenderer.render(
+                uiContext.drawList,
+                window.getWidth(),
+                window.getHeight()
+        );
+    }
+
+    @Override
     public void input(Window window, Scene scene, long diffTimeMillis) {
+        uiContext.beginFrame(window.getWidth(), window.getHeight());
+
         float move = diffTimeMillis * MOVEMENT_SPEED;
         Camera camera = scene.getCamera();
+
         if (window.isKeyPressed(GLFW_KEY_W)) {
             camera.moveForward(move);
         } else if (window.isKeyPressed(GLFW_KEY_S)) {
             camera.moveBackwards(move);
         }
+
         if (window.isKeyPressed(GLFW_KEY_A)) {
             camera.moveLeft(move);
         } else if (window.isKeyPressed(GLFW_KEY_D)) {
             camera.moveRight(move);
         }
+
         if (window.isKeyPressed(GLFW_KEY_UP)) {
             camera.moveUp(move);
         } else if (window.isKeyPressed(GLFW_KEY_DOWN)) {
@@ -83,19 +126,35 @@ public class DemoGame implements IAppLogic {
         }
 
         MouseInput mouseInput = window.getMouseInput();
+
         if (mouseInput.isRightButtonPressed()) {
             Vector2f displVec = mouseInput.getDisplVec();
-            camera.addRotation((float) Math.toRadians(-displVec.x * MOUSE_SENSITIVITY),
+            camera.addRotation(
+                    (float) Math.toRadians(-displVec.x * MOUSE_SENSITIVITY),
                     (float) Math.toRadians(-displVec.y) * MOUSE_SENSITIVITY);
         }
+
+        boolean leftMouseDown = uiContext.input.isMouseDown(0);
+        boolean leftPressed = leftMouseDown && !prevLeftMouseDown;
+        prevLeftMouseDown = leftMouseDown;
+
+        if (uiButton.draw("Toggle Wireframe", 24f, 24f, 180f, 34f)) {
+            wireframeEnabled = !wireframeEnabled;
+            sceneRender.setWireframe(wireframeEnabled);
+            System.out.println("Wireframe mode: " + (wireframeEnabled ? "enabled" : "disabled"));
+        }
+
+        uiContext.endFrame();
     }
 
     @Override
     public void update(Window window, Scene scene, long diffTimeMillis) {
-        rotation += 1.5;
+        rotation += 1.5f;
+
         if (rotation > 360) {
             rotation = 0;
         }
+
         cube.setRotation(1, 1, 1, (float) Math.toRadians(rotation));
         cube.updateModelMatrix();
     }
