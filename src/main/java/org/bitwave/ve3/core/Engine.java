@@ -72,6 +72,7 @@ public class Engine {
 
             if (targetFps <= 0 || deltaFps >= 1) {
                 render.render(window, scene);
+                appLogic.renderGui(window, scene);
                 deltaFps--;
                 window.update();
             }

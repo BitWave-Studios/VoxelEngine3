@@ -13,4 +13,5 @@ public interface IAppLogic {
     void init(Window window, Scene scene, Render renderer);
     void input(Window window, Scene scene, long diffTimeMillis);
     void update(Window window, Scene scene, long diffTimeMillis);
+    void renderGui(Window window, Scene scene);
 }
