@@ -21,6 +21,8 @@ public class SceneRender {
     private static final int MAX_POINT_LIGHTS = 5;
     private static final int MAX_SPOT_LIGHTS = 5;
 
+    private boolean wireframe;
+
     public SceneRender() {
         List<ShaderProgram.ShaderModuleData> shaderModuleDataList = new ArrayList<>();
         shaderModuleDataList.add(new ShaderProgram.ShaderModuleData("shaders/scene.vert", GL_VERTEX_SHADER));
@@ -31,6 +33,14 @@ public class SceneRender {
 
     public void cleanup() {
         shaderProgram.cleanup();
+    }
+
+    public void setWireframe(boolean wireframe) {
+        this.wireframe = wireframe;
+    }
+
+    public boolean isWireframe() {
+        return wireframe;
     }
 
     private void createUniforms() {
@@ -98,13 +108,18 @@ public class SceneRender {
                 glActiveTexture(GL_TEXTURE0);
                 texture.bind();
 
+                glPolygonMode(GL_FRONT_AND_BACK, wireframe ? GL_LINE : GL_FILL);
+
                 for (Mesh mesh : material.getMeshList()) {
                     glBindVertexArray(mesh.getVaoId());
+
                     for (Entity entity : entities) {
                         uniformsMap.setUniform("modelMatrix", entity.getModelMatrix());
                         glDrawElements(GL_TRIANGLES, mesh.getNumVertices(), GL_UNSIGNED_INT, 0);
                     }
                 }
+
+                glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
             }
         }
 

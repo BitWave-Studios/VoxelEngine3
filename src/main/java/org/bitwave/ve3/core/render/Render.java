@@ -17,6 +17,10 @@ public class Render {
         sceneRender = new SceneRender();
     }
 
+    public SceneRender getSceneRender() {
+        return sceneRender;
+    }
+
     public void cleanup() {
         sceneRender.cleanup();
     }

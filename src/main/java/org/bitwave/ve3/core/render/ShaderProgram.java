@@ -7,6 +7,10 @@ import java.util.*;
 
 import static org.lwjgl.opengl.GL30.*;
 
+/**
+ * A class that represents a shader program in OpenGL.
+ * It encapsulates the creation, compilation, linking, and management of vertex and fragment shaders.
+ */
 public class ShaderProgram {
     private final int programId;
 
