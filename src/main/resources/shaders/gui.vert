@@ -1,16 +1,18 @@
-#version 330
+#version 330 core
 
-layout(location = 0) in vec2 inPos;
-layout(location = 1) in vec2 inTexCoord;
-layout(location = 2) in vec4 inColor;
+layout(location = 0) in vec2 aPosition;
+layout(location = 1) in vec2 aTexCoord;
+layout(location = 2) in vec4 aColor;
 
-out vec2 fragTexCoord;
-out vec4 fragColor;
+uniform mat4 uProjection;
 
-uniform mat4 projectionMatrix;
+out vec2 vTexCoord;
+out vec4 vColor;
+
 
 void main() {
-    fragTexCoord = inTexCoord;
-    fragColor = inColor;
-    gl_Position = projectionMatrix * vec4(inPos, 0.0, 1.0);
+    vTexCoord = aTexCoord;
+    vColor = aColor;
+
+    gl_Position = uProjection * vec4(aPosition, 0.0, 1.0);
 }
