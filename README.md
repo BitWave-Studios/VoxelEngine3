@@ -15,24 +15,12 @@ It's built in Java and uses LWJGL for OpenGL rendering, OpenAL for audio, and GL
 
 We're also using JOML for math and eventually adding OpenGL ES for mobile support.
 
+**NOTE:** The GUI system used in this project, is entirely custom-built - this is separate to the application that will
+be released later in development.
+
 > You can find the full list of dependencies in the [Build Script](build.gradle.kts).
 
 ### What are the requirements to use VE3?
-Windows x64 and x86 are the first supported platforms, as this is the architecture of my desktop and main development machine.
-
-As progress is made, the intention is to reach support for the following:
-
-| OS      | Natives       | Arch  | VE3 Version |
-|---------|---------------|-------|-------------|
-| Windows | Windows x64   | x64   | 3.0         |
-| Windows | Windows x86   | x86   | 3.0         |
-| Windows | Windows ARM64 | ARM64 | 3.5         |
-| Linux   | Linux x64     | x64   | 3.0         |
-| Linux   | Linux x86     | x86   | 3.0         |
-| Linux   | Linux ARM64   | ARM64 | 3.5         |
-| Linux   | Linux ARM32   | ARM32 | 3.5         |
-| macOS   | macOS x64     | x64   | 3.0         |
-| macOS   | macOS ARM64   | ARM64 | 3.5         |
 
 We recommend using any Java SDK that supports 21 or higher, as this is the minimum version required to run VE3.
 
