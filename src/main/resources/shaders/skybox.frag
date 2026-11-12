@@ -1,6 +1,6 @@
 #version 330 core
 
-in vec2 outTextCoord;
+in vec2 outTexCoord;
 out vec4 fragColor;
 
 uniform vec4 diffuse;
@@ -10,7 +10,7 @@ uniform int hasTexture;
 void main()
 {
     if (hasTexture == 1) {
-        fragColor = texture(txSampler, outTextCoord);
+        fragColor = texture(txSampler, outTexCoord);
     } else {
         fragColor = diffuse;
     }
