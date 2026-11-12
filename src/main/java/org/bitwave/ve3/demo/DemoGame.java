@@ -13,6 +13,8 @@ import org.bitwave.ve3.core.render.SceneRender;
 import org.bitwave.ve3.core.scene.Entity;
 import org.bitwave.ve3.core.scene.ModelLoader;
 import org.bitwave.ve3.core.scene.Scene;
+import org.bitwave.ve3.core.scene.Skybox;
+import org.bitwave.ve3.core.scene.lights.SceneLights;
 import org.bitwave.ve3.core.util.ResourcePaths;
 import org.bitwave.ve3.core.util.Utils;
 import org.bitwave.ve3.core.util.Version;
@@ -37,6 +39,9 @@ import static org.lwjgl.glfw.GLFW.*;
 public class DemoGame implements IAppLogic {
     private static final float MOUSE_SENSITIVITY = 0.1f;
     private static final float MOVEMENT_SPEED = 0.005f;
+
+    private Entity[][] terrainEntities;
+    private static final int NUM_CHUNKS = 4;
 
     private static final String UI_VERTEX_SHADER = ResourcePaths.toResourcePath("shaders/gui.vert");
     private static final String UI_FRAGMENT_SHADER = ResourcePaths.toResourcePath("shaders/gui.frag");
@@ -72,6 +77,17 @@ public class DemoGame implements IAppLogic {
     @Override
     public void init(Window window, Scene scene, Render render) {
         this.sceneRender = render.getSceneRender();
+
+        SceneLights sceneLights = new SceneLights();
+        sceneLights.getAmbientLight().setIntensity(0.8f);
+        scene.setSceneLights(sceneLights);
+
+        Skybox skybox = new Skybox("models/skybox/skybox.obj", scene.getTextureCache());
+        skybox.getSkyboxEntity().setScale(50);
+        skybox.getSkyboxEntity().updateModelMatrix();
+        scene.setSkybox(skybox);
+        scene.getCamera().moveUp(0.1f);
+//        updateTerrain(scene);
 
         uiShader = new UiShader(UI_VERTEX_SHADER, UI_FRAGMENT_SHADER);
         uiRenderer = new UiOpenGLRenderer(uiShader);
@@ -119,9 +135,9 @@ public class DemoGame implements IAppLogic {
             camera.moveRight(move);
         }
 
-        if (window.isKeyPressed(GLFW_KEY_UP)) {
+        if (window.isKeyPressed(GLFW_KEY_E)) {
             camera.moveUp(move);
-        } else if (window.isKeyPressed(GLFW_KEY_DOWN)) {
+        } else if (window.isKeyPressed(GLFW_KEY_Q)) {
             camera.moveDown(move);
         }
 
@@ -157,5 +173,30 @@ public class DemoGame implements IAppLogic {
 
         cube.setRotation(1, 1, 1, (float) Math.toRadians(rotation));
         cube.updateModelMatrix();
+//        updateTerrain(scene);
+    }
+
+    public void updateTerrain(Scene scene) {
+        int cellSize = 10;
+        Camera camera = scene.getCamera();
+        Vector3f cameraPos = camera.getPosition();
+        int cellCol = (int) (cameraPos.x / cellSize);
+        int cellRow = (int) (cameraPos.z / cellSize);
+
+        int numRows = NUM_CHUNKS * 2 + 1;
+        int numCols = numRows;
+        int zOffset = -NUM_CHUNKS;
+        float scale = cellSize / 2.0f;
+        for (int j = 0; j < numRows; j++) {
+            int xOffset = -NUM_CHUNKS;
+            for (int i = 0; i < numCols; i++) {
+                Entity entity = terrainEntities[j][i];
+                entity.setScale(scale);
+                entity.setPosition((cellCol + xOffset) * 2.0f, 0, (cellRow + zOffset) * 2.0f);
+                entity.getModelMatrix().identity().scale(scale).translate(entity.getPosition());
+                xOffset++;
+            }
+            zOffset++;
+        }
     }
 }
