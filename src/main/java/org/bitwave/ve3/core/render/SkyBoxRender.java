@@ -1,0 +1,83 @@
+package org.bitwave.ve3.core.render;
+
+import org.bitwave.ve3.core.graph.*;
+import org.bitwave.ve3.core.scene.Entity;
+import org.bitwave.ve3.core.scene.Scene;
+import org.bitwave.ve3.core.scene.Skybox;
+import org.joml.Matrix4f;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.lwjgl.opengl.GL20.*;
+import static org.lwjgl.opengl.GL30.*;
+
+/**
+ * Renders a skybox in the scene.
+ */
+public class SkyBoxRender {
+    private ShaderProgram shaderProgram;
+    private UniformsMap uniformsMap;
+    private Matrix4f viewMatrix;
+
+    public SkyBoxRender() {
+        List<ShaderProgram.ShaderModuleData> shaderModuleDataList = new ArrayList<>();
+        shaderModuleDataList.add(new ShaderProgram.ShaderModuleData("shaders/skybox.vert", GL_VERTEX_SHADER));
+        shaderModuleDataList.add(new ShaderProgram.ShaderModuleData("shaders/skybox.frag", GL_FRAGMENT_SHADER));
+        shaderProgram = new ShaderProgram(shaderModuleDataList);
+        viewMatrix = new Matrix4f();
+        createUniforms();
+    }
+
+    public void render(Scene scene) {
+        Skybox skybox = scene.getSkybox();
+        if (skybox == null) {
+            return;
+        }
+        shaderProgram.bind();
+
+        uniformsMap.setUniform("projectionMatrix", scene.getProjection().getProjectionMatrix());
+        viewMatrix.set(scene.getCamera().getViewMatrix());
+        viewMatrix.m30(0);
+        viewMatrix.m31(0);
+        viewMatrix.m32(0);
+        uniformsMap.setUniform("viewMatrix", viewMatrix);
+        uniformsMap.setUniform("txSampler", 0);
+
+        Model skyboxModel = skybox.getSkyboxModel();
+        Entity skyboxEntity = skybox.getSkyboxEntity();
+        TextureCache textureCache = scene.getTextureCache();
+        for (Material material : skyboxModel.getMaterialList()) {
+            Texture texture = textureCache.getTexture(material.getTexturePath());
+            glActiveTexture(GL_TEXTURE0);
+            texture.bind();
+
+            uniformsMap.setUniform("diffuse", material.getDiffuseColor());
+            uniformsMap.setUniform("hasTexture", texture.getTexturePath().equals(TextureCache.DEFAULT_TEXTURE) ? 0 : 1);
+
+            for (Mesh mesh : material.getMeshList()) {
+                glBindVertexArray(mesh.getVaoId());
+
+                uniformsMap.setUniform("modelMatrix", skyboxEntity.getModelMatrix());
+                glDrawElements(GL_TRIANGLES, mesh.getNumVertices(), GL_UNSIGNED_INT, 0);
+            }
+        }
+
+        glBindVertexArray(0);
+        shaderProgram.unbind();
+    }
+
+    private void createUniforms() {
+        uniformsMap = new UniformsMap(shaderProgram.getProgramId());
+        uniformsMap.createUniform("projectionMatrix");
+        uniformsMap.createUniform("viewMatrix");
+        uniformsMap.createUniform("modelMatrix");
+        uniformsMap.createUniform("diffuse");
+        uniformsMap.createUniform("txSampler");
+        uniformsMap.createUniform("hasTexture");
+    }
+
+    public void cleanup() {
+        shaderProgram.cleanup();
+    }
+}
