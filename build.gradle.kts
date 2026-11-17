@@ -37,11 +37,6 @@ dependencies {
     implementation(libs.tinylog.api)
     implementation(libs.tinylog.impl)
 
-    implementation(libs.socialsdk4j.natives)
-    implementation(libs.socialsdk4j.bom)
-    implementation(libs.socialsdk4j)
-    implementation(libs.socialsdk4j.debug)
-
     implementation(platform("org.lwjgl:lwjgl-bom:${property("lwjglVersion")}"))
     implementation("org.lwjgl:lwjgl")
     implementation("org.lwjgl:lwjgl-glfw")
