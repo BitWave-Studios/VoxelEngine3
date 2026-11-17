@@ -8,10 +8,9 @@ socialsdk4jVersion = "1.9.16441"
 [libraries]
 joml = { group = "org.joml", name = "joml", version.ref = "jomlVersion" }
 
-socialsdk4j-natives = { group = "net.derfruhling.discord", name = "socialsdk4j-natives", version.ref = "socialsdk4jVersion" }
+socialsdk = { group = "net.derfruhling.discord", name = "socialsdk", version.ref = "socialsdk4jVersion" }
 socialsdk4j-bom = { group = "net.derfruhling.discord", name = "socialsdk4j-bom", version = "1.0-SNAPSHOT" }
 socialsdk4j = { group = "net.derfruhling.discord", name = "socialsdk4j", version = "1.0-SNAPSHOT" }
-socialsdk4j-debug = { group = "net.derfruhling.discord", name = "socialsdk-debug", version.ref = "socialsdk4jVersion" }
 
 tinylog-api = { group = "org.tinylog", name = "tinylog-api", version.ref = "tinylogVersion" }
 tinylog-impl = { group = "org.tinylog", name = "tinylog-impl", version.ref = "tinylogVersion" }
