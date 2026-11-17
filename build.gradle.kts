@@ -33,9 +33,9 @@ val lwjglNatives = when {
 
 
 dependencies {
-    implementation("org.joml:joml:1.10.8")
-    implementation("org.tinylog:tinylog-api:2.8.1")
-    implementation("org.tinylog:tinylog-impl:2.8.1")
+    implementation(libs.joml)
+    implementation(libs.tinylog.api)
+    implementation(libs.tinylog.impl)
 
     implementation(platform("org.lwjgl:lwjgl-bom:${property("lwjglVersion")}"))
     implementation("org.lwjgl:lwjgl")
@@ -50,9 +50,9 @@ dependencies {
     runtimeOnly("org.lwjgl:lwjgl-stb::$lwjglNatives")
     runtimeOnly("org.lwjgl:lwjgl-assimp::$lwjglNatives")
 
-    testImplementation(platform("org.junit:junit-bom:5.11.4"))
-    testImplementation("org.junit.jupiter:junit-jupiter")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    testImplementation(platform(libs.junit))
+    testImplementation(libs.junit.jupiter)
+    testRuntimeOnly(libs.junit.platform)
 }
 
 application {
