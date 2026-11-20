@@ -36,7 +36,7 @@ public final class Button {
             backgroundColor = UiColor.rgba(75, 75, 88, 255);
         }
 
-        context.drawList.addFilledRect(rect, backgroundColor);
+        context.drawList.addFilledRect(rect, backgroundColor, 10f);
         context.drawList.addText(x + 10, y + height * 0.5f - 7, label, UiColor.WHITE, 14);
 
         return pressed;
