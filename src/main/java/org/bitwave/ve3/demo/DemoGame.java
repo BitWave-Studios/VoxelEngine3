@@ -2,10 +2,7 @@ package org.bitwave.ve3.demo;
 
 import org.bitwave.ve3.core.Engine;
 import org.bitwave.ve3.core.IAppLogic;
-import org.bitwave.ve3.core.graph.Material;
-import org.bitwave.ve3.core.graph.Mesh;
 import org.bitwave.ve3.core.graph.Model;
-import org.bitwave.ve3.core.graph.Texture;
 import org.bitwave.ve3.core.input.MouseInput;
 import org.bitwave.ve3.core.player.Camera;
 import org.bitwave.ve3.core.render.Render;
@@ -16,18 +13,11 @@ import org.bitwave.ve3.core.scene.Scene;
 import org.bitwave.ve3.core.scene.Skybox;
 import org.bitwave.ve3.core.scene.lights.SceneLights;
 import org.bitwave.ve3.core.util.ResourcePaths;
-import org.bitwave.ve3.core.util.Utils;
 import org.bitwave.ve3.core.util.Version;
 import org.bitwave.ve3.core.window.Window;
 import org.bitwave.ve3.gui.*;
 import org.bitwave.ve3.gui.components.Button;
 import org.joml.Vector2f;
-import org.joml.Vector3f;
-import org.joml.Vector4f;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.lwjgl.glfw.GLFW.*;
 
