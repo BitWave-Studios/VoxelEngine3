@@ -82,12 +82,11 @@ public class DemoGame implements IAppLogic {
         sceneLights.getAmbientLight().setIntensity(0.8f);
         scene.setSceneLights(sceneLights);
 
-        Skybox skybox = new Skybox("models/skybox/skybox.obj", scene.getTextureCache());
+        Skybox skybox = new Skybox(ResourcePaths.toResourcePath("/models/skybox/skybox.obj"), scene.getTextureCache());
         skybox.getSkyboxEntity().setScale(50);
         skybox.getSkyboxEntity().updateModelMatrix();
         scene.setSkybox(skybox);
         scene.getCamera().moveUp(0.1f);
-//        updateTerrain(scene);
 
         uiShader = new UiShader(UI_VERTEX_SHADER, UI_FRAGMENT_SHADER);
         uiRenderer = new UiOpenGLRenderer(uiShader);
@@ -173,7 +172,6 @@ public class DemoGame implements IAppLogic {
 
         cube.setRotation(1, 1, 1, (float) Math.toRadians(rotation));
         cube.updateModelMatrix();
-//        updateTerrain(scene);
     }
 
     public void updateTerrain(Scene scene) {
