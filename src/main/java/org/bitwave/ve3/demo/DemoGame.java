@@ -53,8 +53,8 @@ public class DemoGame implements IAppLogic {
     private Entity[][] terrainEntities;
     private static final int NUM_CHUNKS = 4;
 
-    private static final String UI_VERTEX_SHADER = ResourcePaths.toResourcePath("shaders/gui.vert");
-    private static final String UI_FRAGMENT_SHADER = ResourcePaths.toResourcePath("shaders/gui.frag");
+    private static final String UI_VERTEX_SHADER = ResourcePaths.toResourcePath("/shaders/gui.vert");
+    private static final String UI_FRAGMENT_SHADER = ResourcePaths.toResourcePath("/shaders/gui.frag");
 
     private final UiContext uiContext = new UiContext();
     private final Button toggleWireframeBtn = new Button(uiContext);
@@ -105,7 +105,7 @@ public class DemoGame implements IAppLogic {
 
         Model cubeModel = ModelLoader.loadModel(
                 "cubeModel",
-                ResourcePaths.toFilePath("models/cube/cube.obj"),
+                ResourcePaths.toResourcePath("/models/cube/cube.obj"),
                 scene.getTextureCache()
         );
 
