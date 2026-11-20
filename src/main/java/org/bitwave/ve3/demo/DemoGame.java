@@ -37,6 +37,16 @@ import static org.lwjgl.glfw.GLFW.*;
  * It is not a complete game, and is not intended to be used as a template for a game.
  */
 public class DemoGame implements IAppLogic {
+    private static final String engineVersion;
+
+    static {
+        try {
+            engineVersion = new Version().getVersion();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private static final float MOUSE_SENSITIVITY = 0.1f;
     private static final float MOVEMENT_SPEED = 0.005f;
 
@@ -64,7 +74,7 @@ public class DemoGame implements IAppLogic {
 
     public static void main(String[] args) {
         DemoGame game = new DemoGame();
-        Engine gameEng = new Engine("VE3", new Window.WindowOptions(), game);
+        Engine gameEng = new Engine("VE3 - " + engineVersion, new Window.WindowOptions(), game);
         gameEng.start();
     }
 
