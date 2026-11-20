@@ -169,6 +169,9 @@ public class DemoGame implements IAppLogic {
             System.out.println("Wireframe mode: " + (wireframeEnabled ? "enabled" : "disabled"));
         }
 
+        UiColor indicatorColor = !wireframeEnabled ? UiColor.rgba(90, 200, 120, 1) : UiColor.rgba(100, 70, 70, 1);
+        uiContext.drawList.addFilledRect(new UiRect(24f, 66f, 18f, 18f), indicatorColor);
+
         uiContext.endFrame();
     }
 
