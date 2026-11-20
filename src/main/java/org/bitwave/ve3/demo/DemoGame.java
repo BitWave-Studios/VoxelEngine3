@@ -50,9 +50,6 @@ public class DemoGame implements IAppLogic {
     private static final float MOUSE_SENSITIVITY = 0.1f;
     private static final float MOVEMENT_SPEED = 0.005f;
 
-    private Entity[][] terrainEntities;
-    private static final int NUM_CHUNKS = 4;
-
     private static final String UI_VERTEX_SHADER = ResourcePaths.toResourcePath("/shaders/gui.vert");
     private static final String UI_FRAGMENT_SHADER = ResourcePaths.toResourcePath("/shaders/gui.frag");
 
@@ -185,29 +182,5 @@ public class DemoGame implements IAppLogic {
 
         cube.setRotation(1, 1, 1, (float) Math.toRadians(rotation));
         cube.updateModelMatrix();
-    }
-
-    public void updateTerrain(Scene scene) {
-        int cellSize = 10;
-        Camera camera = scene.getCamera();
-        Vector3f cameraPos = camera.getPosition();
-        int cellCol = (int) (cameraPos.x / cellSize);
-        int cellRow = (int) (cameraPos.z / cellSize);
-
-        int numRows = NUM_CHUNKS * 2 + 1;
-        int numCols = numRows;
-        int zOffset = -NUM_CHUNKS;
-        float scale = cellSize / 2.0f;
-        for (int j = 0; j < numRows; j++) {
-            int xOffset = -NUM_CHUNKS;
-            for (int i = 0; i < numCols; i++) {
-                Entity entity = terrainEntities[j][i];
-                entity.setScale(scale);
-                entity.setPosition((cellCol + xOffset) * 2.0f, 0, (cellRow + zOffset) * 2.0f);
-                entity.getModelMatrix().identity().scale(scale).translate(entity.getPosition());
-                xOffset++;
-            }
-            zOffset++;
-        }
     }
 }
