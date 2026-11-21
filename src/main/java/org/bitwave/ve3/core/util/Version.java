@@ -8,6 +8,20 @@ public class Version {
         Properties properties = new Properties();
         InputStream is = Version.class.getResourceAsStream("/version.properties");
         properties.load(is);
-        return properties.getProperty("engine.version");
+        return properties.getProperty("version");
+    }
+
+    public String getReleaseType() throws Exception {
+        Properties properties = new Properties();
+        InputStream is = Version.class.getResourceAsStream("/version.properties");
+        properties.load(is);
+        return properties.getProperty("releaseType");
+    }
+
+    public String getPublisher() throws Exception {
+        Properties properties = new Properties();
+        InputStream is = Version.class.getResourceAsStream("/version.properties");
+        properties.load(is);
+        return properties.getProperty("publisher");
     }
 }
