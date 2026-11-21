@@ -35,6 +35,7 @@ val lwjglNatives = when {
 
 dependencies {
     implementation(libs.joml)
+    implementation(libs.joml.primitives)
     implementation(libs.tinylog.api)
     implementation(libs.tinylog.impl)
 
