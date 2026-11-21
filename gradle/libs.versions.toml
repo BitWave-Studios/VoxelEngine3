@@ -4,6 +4,7 @@ jomlVersion = "1.10.8"
 tinylogVersion = "2.8.1"
 junitVersion = "5.11.4"
 socialsdk4jVersion = "1.9.16441"
+lwjglVersion = "3.4.3"
 
 [libraries]
 joml = { group = "org.joml", name = "joml", version.ref = "jomlVersion" }
