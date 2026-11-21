@@ -46,7 +46,7 @@ dependencies {
     implementation("org.lwjgl:lwjgl-opengles")
     implementation("org.lwjgl:lwjgl-stb")
     implementation("org.lwjgl:lwjgl-assimp")
-    implementation("org.lwjgl:lwjgl-elg")
+    implementation("org.lwjgl:lwjgl-egl")
 
     runtimeOnly("org.lwjgl:lwjgl::$lwjglNatives")
     runtimeOnly("org.lwjgl:lwjgl-glfw::$lwjglNatives")
@@ -55,7 +55,7 @@ dependencies {
     runtimeOnly("org.lwjgl:lwjgl-opengles::$lwjglNatives")
     runtimeOnly("org.lwjgl:lwjgl-stb::$lwjglNatives")
     runtimeOnly("org.lwjgl:lwjgl-assimp::$lwjglNatives")
-    runtimeOnly("org.lwjgl:lwjgl-elg::$lwjglNatives")
+    runtimeOnly("org.lwjgl:lwjgl-egl::$lwjglNatives")
 
     testImplementation(platform(libs.junit))
     testImplementation(libs.junit.jupiter)
