@@ -58,7 +58,7 @@ dependencies {
     implementation(libs.tinylog.api)
     implementation(libs.tinylog.impl)
 
-    implementation(platform("org.lwjgl:lwjgl-bom:${property("lwjglVersion")}"))
+    implementation(platform("org.lwjgl:lwjgl-bom:${lwjglVersion}"))
     implementation("org.lwjgl:lwjgl")
     implementation("org.lwjgl:lwjgl-glfw")
     implementation("org.lwjgl:lwjgl-opengl")
