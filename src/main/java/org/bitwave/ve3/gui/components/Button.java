@@ -28,15 +28,15 @@ public final class Button {
         if (hovered) context.setActive(id);
         if (pressed) context.setFocused(id);
 
-        UiColor backgroundColor = UiColor.rgba(60, 60, 70, 255);
+        UiColor backgroundColor = UiColor.rgba(60, 60, 70, 1);
 
         if (context.isActive(id)) {
-            backgroundColor = UiColor.rgba(45, 45, 55, 255);
+            backgroundColor = UiColor.rgba(45, 45, 55, 1);
         } else if (hovered) {
-            backgroundColor = UiColor.rgba(75, 75, 88, 255);
+            backgroundColor = UiColor.rgba(75, 75, 88, 1);
         }
 
-        context.drawList.addFilledRect(rect, backgroundColor);
+        context.drawList.addFilledRect(rect, backgroundColor, 10f);
         context.drawList.addText(x + 10, y + height * 0.5f - 7, label, UiColor.WHITE, 14);
 
         return pressed;

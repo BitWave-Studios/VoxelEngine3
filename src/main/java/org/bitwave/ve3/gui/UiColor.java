@@ -5,6 +5,6 @@ public record UiColor(float r, float g, float b, float a) {
     public static final UiColor BLACK = new UiColor(0, 0, 0, 1);
 
     public static UiColor rgba(int r, int g, int b, int a) {
-        return new UiColor(r / 255f, g / 255f, b / 255f, a / 255f);
+        return new UiColor(r / 255f, g / 255f, b / 255f, a);
     }
 }
