@@ -7,6 +7,7 @@ plugins {
 
 group = property("group") as String
 version = property("version") as String
+val releaseType = property("releaseType") as String
 
 
 repositories {
@@ -43,12 +44,16 @@ dependencies {
     implementation("org.lwjgl:lwjgl-opengl")
     implementation("org.lwjgl:lwjgl-stb")
     implementation("org.lwjgl:lwjgl-assimp")
+    implementation("org.lwjgl:lwjgl-opengles")
+    implementation("org.lwjgl:lwjgl-elg")
 
     runtimeOnly("org.lwjgl:lwjgl::$lwjglNatives")
     runtimeOnly("org.lwjgl:lwjgl-glfw::$lwjglNatives")
     runtimeOnly("org.lwjgl:lwjgl-opengl::$lwjglNatives")
     runtimeOnly("org.lwjgl:lwjgl-stb::$lwjglNatives")
     runtimeOnly("org.lwjgl:lwjgl-assimp::$lwjglNatives")
+    runtimeOnly("org.lwjgl:lwjgl-opengles::$lwjglNatives")
+    runtimeOnly("org.lwjgl:lwjgl-elg::$lwjglNatives")
 
     testImplementation(platform(libs.junit))
     testImplementation(libs.junit.jupiter)
@@ -61,9 +66,21 @@ application {
 
 tasks.register("createVersionProperties") {
     description = "Creates a version.properties file with the project version."
+
+    val versionFile = layout.projectDirectory.file("src/main/resources/version.properties")
+    outputs.file(versionFile)
+
     doLast {
-        val versionFile = file("src/main/resources/version.properties")
-        versionFile.writeText("engine.version=${project.version}")
+        versionFile.asFile.apply {
+            parentFile.mkdirs()
+            writeText(
+                """
+                publisher=${project.group}
+                version=${project.version}
+                releaseType=${releaseType}
+                """.trimIndent()
+            )
+        }
     }
 }
 
