@@ -12,12 +12,16 @@ import org.bitwave.ve3.core.scene.ModelLoader;
 import org.bitwave.ve3.core.scene.Scene;
 import org.bitwave.ve3.core.scene.Skybox;
 import org.bitwave.ve3.core.scene.lights.SceneLights;
+import org.bitwave.ve3.core.util.AppLog;
 import org.bitwave.ve3.core.util.ResourcePaths;
 import org.bitwave.ve3.core.util.Version;
 import org.bitwave.ve3.core.window.Window;
 import org.bitwave.ve3.gui.*;
 import org.bitwave.ve3.gui.components.Button;
 import org.joml.Vector2f;
+
+import java.io.IOException;
+import java.nio.file.Path;
 
 import static org.lwjgl.glfw.GLFW.*;
 
@@ -28,10 +32,16 @@ import static org.lwjgl.glfw.GLFW.*;
  */
 public class DemoGame implements IAppLogic {
     private static final String engineVersion;
+    private static final String releaseType;
+    private static final String publisher;
+
+    private static final boolean WRITE_LOG_ON_EXIT = true;
 
     static {
         try {
             engineVersion = new Version().getVersion();
+            releaseType = new Version().getReleaseType();
+            publisher = new Version().getPublisher();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -62,13 +72,34 @@ public class DemoGame implements IAppLogic {
     public static void main(String[] args) {
         DemoGame game = new DemoGame();
         Engine gameEng = new Engine("VE3 - " + engineVersion, new Window.WindowOptions(), game);
+
+        AppLog.info("Application started");
+
         gameEng.start();
+
+        System.out.println("VE3 by BitWave Studios");
+        System.out.println("Current release: " + engineVersion + "-" + releaseType);
+
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            if (!WRITE_LOG_ON_EXIT) return;
+            try {
+                AppLog.writeTo(Path.of("application.log"));
+            } catch (IOException e) {
+                System.err.println("Could not write application log: " + e);
+            }
+        }, "write-log-on-exit"));
     }
 
     @Override
     public void cleanup() {
-        if (uiRenderer != null) uiRenderer.cleanup();
-        if (uiShader != null) uiShader.cleanup();
+        if (uiRenderer != null) {
+            uiRenderer.cleanup();
+            AppLog.info("UIRenderer cleaned");
+        }
+        if (uiShader != null) {
+            uiShader.cleanup();
+            AppLog.info("UIShader cleaned");
+        }
     }
 
     @Override
@@ -121,20 +152,26 @@ public class DemoGame implements IAppLogic {
 
         if (window.isKeyPressed(GLFW_KEY_W)) {
             camera.moveForward(move);
+            AppLog.info("Moving forward");
         } else if (window.isKeyPressed(GLFW_KEY_S)) {
             camera.moveBackwards(move);
+            AppLog.info("Moving backwards");
         }
 
         if (window.isKeyPressed(GLFW_KEY_A)) {
             camera.moveLeft(move);
+            AppLog.info("Moving left");
         } else if (window.isKeyPressed(GLFW_KEY_D)) {
             camera.moveRight(move);
+            AppLog.info("Moving right");
         }
 
         if (window.isKeyPressed(GLFW_KEY_E)) {
             camera.moveUp(move);
+            AppLog.info("Moving up");
         } else if (window.isKeyPressed(GLFW_KEY_Q)) {
             camera.moveDown(move);
+            AppLog.info("Moving down");
         }
 
         MouseInput mouseInput = window.getMouseInput();
@@ -153,7 +190,7 @@ public class DemoGame implements IAppLogic {
         if (toggleWireframeBtn.draw("Toggle Wireframe", 24f, 24f, 180f, 34f)) {
             wireframeEnabled = !wireframeEnabled;
             sceneRender.setWireframe(wireframeEnabled);
-            System.out.println("Wireframe mode: " + (wireframeEnabled ? "enabled" : "disabled"));
+            AppLog.info("Wireframe mode: " + (wireframeEnabled ? "enabled" : "disabled"));
         }
 
         UiColor indicatorColor = wireframeEnabled ? UiColor.rgba(90, 200, 120, 1) : UiColor.rgba(200, 70, 70, 1);
