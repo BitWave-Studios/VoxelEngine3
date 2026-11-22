@@ -93,7 +93,7 @@ Otherwise, we appreciate your patience.
 
 ---
 
-[Standards and Design]: #
+[Standards and Design]: STANDARDS.md
 [AI Policy]: https://www.voxelengine3.com/policies
 [Issue]: https://codeberg.org/Leokayasen/VoxelEngine3/issues
 [Discord]: https://discord.gg/6EZx8VaHWJ
