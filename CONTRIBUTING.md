@@ -94,6 +94,6 @@ Otherwise, we appreciate your patience.
 ---
 
 [Standards and Design]: #
-[AI Policy]: https://www.bitwave-studios.com/policies
+[AI Policy]: https://www.voxelengine3.com/policies
 [Issue]: https://codeberg.org/Leokayasen/VoxelEngine3/issues
 [Discord]: https://discord.gg/6EZx8VaHWJ
