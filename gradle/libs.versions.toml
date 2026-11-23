@@ -1,0 +1,20 @@
+
+[versions]
+jomlVersion = "1.10.8"
+tinylogVersion = "2.8.1"
+junitVersion = "5.11.4"
+socialsdk4jVersion = "1.9.16441"
+
+[libraries]
+joml = { group = "org.joml", name = "joml", version.ref = "jomlVersion" }
+
+socialsdk = { group = "net.derfruhling.discord", name = "socialsdk", version.ref = "socialsdk4jVersion" }
+socialsdk4j-bom = { group = "net.derfruhling.discord", name = "socialsdk4j-bom", version = "1.0-SNAPSHOT" }
+socialsdk4j = { group = "net.derfruhling.discord", name = "socialsdk4j", version = "1.0-SNAPSHOT" }
+
+tinylog-api = { group = "org.tinylog", name = "tinylog-api", version.ref = "tinylogVersion" }
+tinylog-impl = { group = "org.tinylog", name = "tinylog-impl", version.ref = "tinylogVersion" }
+
+junit = { group = "org.junit", name = "junit-bom", version.ref = "junitVersion" }
+junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter" }
+junit-platform = { group = "org.junit.platform", name = "junit-platform-launcher" }

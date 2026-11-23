@@ -2,10 +2,7 @@ package org.bitwave.ve3.demo;
 
 import org.bitwave.ve3.core.Engine;
 import org.bitwave.ve3.core.IAppLogic;
-import org.bitwave.ve3.core.graph.Material;
-import org.bitwave.ve3.core.graph.Mesh;
 import org.bitwave.ve3.core.graph.Model;
-import org.bitwave.ve3.core.graph.Texture;
 import org.bitwave.ve3.core.input.MouseInput;
 import org.bitwave.ve3.core.player.Camera;
 import org.bitwave.ve3.core.render.Render;
@@ -16,18 +13,11 @@ import org.bitwave.ve3.core.scene.Scene;
 import org.bitwave.ve3.core.scene.Skybox;
 import org.bitwave.ve3.core.scene.lights.SceneLights;
 import org.bitwave.ve3.core.util.ResourcePaths;
-import org.bitwave.ve3.core.util.Utils;
 import org.bitwave.ve3.core.util.Version;
 import org.bitwave.ve3.core.window.Window;
 import org.bitwave.ve3.gui.*;
 import org.bitwave.ve3.gui.components.Button;
 import org.joml.Vector2f;
-import org.joml.Vector3f;
-import org.joml.Vector4f;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.lwjgl.glfw.GLFW.*;
 
@@ -37,14 +27,21 @@ import static org.lwjgl.glfw.GLFW.*;
  * It is not a complete game, and is not intended to be used as a template for a game.
  */
 public class DemoGame implements IAppLogic {
+    private static final String engineVersion;
+
+    static {
+        try {
+            engineVersion = new Version().getVersion();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private static final float MOUSE_SENSITIVITY = 0.1f;
     private static final float MOVEMENT_SPEED = 0.005f;
 
-    private Entity[][] terrainEntities;
-    private static final int NUM_CHUNKS = 4;
-
-    private static final String UI_VERTEX_SHADER = ResourcePaths.toResourcePath("shaders/gui.vert");
-    private static final String UI_FRAGMENT_SHADER = ResourcePaths.toResourcePath("shaders/gui.frag");
+    private static final String UI_VERTEX_SHADER = ResourcePaths.toResourcePath("/shaders/gui.vert");
+    private static final String UI_FRAGMENT_SHADER = ResourcePaths.toResourcePath("/shaders/gui.frag");
 
     private final UiContext uiContext = new UiContext();
     private final Button toggleWireframeBtn = new Button(uiContext);
@@ -64,7 +61,7 @@ public class DemoGame implements IAppLogic {
 
     public static void main(String[] args) {
         DemoGame game = new DemoGame();
-        Engine gameEng = new Engine("VE3", new Window.WindowOptions(), game);
+        Engine gameEng = new Engine("VE3 - " + engineVersion, new Window.WindowOptions(), game);
         gameEng.start();
     }
 
@@ -82,12 +79,11 @@ public class DemoGame implements IAppLogic {
         sceneLights.getAmbientLight().setIntensity(0.8f);
         scene.setSceneLights(sceneLights);
 
-        Skybox skybox = new Skybox("models/skybox/skybox.obj", scene.getTextureCache());
+        Skybox skybox = new Skybox(ResourcePaths.toResourcePath("/models/skybox/skybox.obj"), scene.getTextureCache());
         skybox.getSkyboxEntity().setScale(50);
         skybox.getSkyboxEntity().updateModelMatrix();
         scene.setSkybox(skybox);
         scene.getCamera().moveUp(0.1f);
-//        updateTerrain(scene);
 
         uiShader = new UiShader(UI_VERTEX_SHADER, UI_FRAGMENT_SHADER);
         uiRenderer = new UiOpenGLRenderer(uiShader);
@@ -96,7 +92,7 @@ public class DemoGame implements IAppLogic {
 
         Model cubeModel = ModelLoader.loadModel(
                 "cubeModel",
-                ResourcePaths.toFilePath("models/cube/cube.obj"),
+                ResourcePaths.toResourcePath("/models/cube/cube.obj"),
                 scene.getTextureCache()
         );
 
@@ -160,6 +156,9 @@ public class DemoGame implements IAppLogic {
             System.out.println("Wireframe mode: " + (wireframeEnabled ? "enabled" : "disabled"));
         }
 
+        UiColor indicatorColor = wireframeEnabled ? UiColor.rgba(90, 200, 120, 1) : UiColor.rgba(200, 70, 70, 1);
+        uiContext.drawList.addFilledRect(new UiRect(24f, 66f, 18f, 18f), indicatorColor);
+
         uiContext.endFrame();
     }
 
@@ -173,30 +172,5 @@ public class DemoGame implements IAppLogic {
 
         cube.setRotation(1, 1, 1, (float) Math.toRadians(rotation));
         cube.updateModelMatrix();
-//        updateTerrain(scene);
-    }
-
-    public void updateTerrain(Scene scene) {
-        int cellSize = 10;
-        Camera camera = scene.getCamera();
-        Vector3f cameraPos = camera.getPosition();
-        int cellCol = (int) (cameraPos.x / cellSize);
-        int cellRow = (int) (cameraPos.z / cellSize);
-
-        int numRows = NUM_CHUNKS * 2 + 1;
-        int numCols = numRows;
-        int zOffset = -NUM_CHUNKS;
-        float scale = cellSize / 2.0f;
-        for (int j = 0; j < numRows; j++) {
-            int xOffset = -NUM_CHUNKS;
-            for (int i = 0; i < numCols; i++) {
-                Entity entity = terrainEntities[j][i];
-                entity.setScale(scale);
-                entity.setPosition((cellCol + xOffset) * 2.0f, 0, (cellRow + zOffset) * 2.0f);
-                entity.getModelMatrix().identity().scale(scale).translate(entity.getPosition());
-                xOffset++;
-            }
-            zOffset++;
-        }
     }
 }
