@@ -39,7 +39,7 @@ git commit -m "fix(gui): color transparency no longer divided by 255" \
             * In most cases, this overrules and resets the counter for `MINOR` and `PATCH` numbers
 * `chore:`
     * A commit that represent tasks like:
-        * initial commit, updating `.gitignore`, etc
+        * initial commit, updating `../.gitignore`, etc
 * `ci/cd:`
     * A commit that affects CI/CD pipelines, backups, monitoring or recovery procedures
 * `build:`
