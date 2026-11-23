@@ -57,6 +57,8 @@ dependencies {
     implementation(libs.joml.primitives)
     implementation(libs.tinylog.api)
     implementation(libs.tinylog.impl)
+    implementation(libs.jakarta.annotation)
+    implementation(libs.google.code.findbugs)
 
     implementation(platform("org.lwjgl:lwjgl-bom:${lwjglVersion}"))
     implementation("org.lwjgl:lwjgl")

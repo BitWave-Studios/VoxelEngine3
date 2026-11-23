@@ -6,10 +6,14 @@ tinylogVersion = "2.8.1"
 junitVersion = "5.11.4"
 socialsdk4jVersion = "1.9.16441"
 lwjglVersion = "3.4.3"
+jakartaVersion = "2.1.1"
+googleCodeVersion = "3.0.2"
 
 [libraries]
 joml = { group = "org.joml", name = "joml", version.ref = "jomlVersion" }
 joml-primitives = { group = "org.joml", name = "joml-primitives", version.ref = "jomlPrimitivesVersion" }
+jakarta-annotation = { group = "jakarta.annotation", name = "jakarta.annotation-api", version.ref = "jakartaVersion"}
+google-code-findbugs = { group = "com.google.code.findbugs", name = "jsr305", version.ref = "googleCodeVersion" }
 
 socialsdk = { group = "net.derfruhling.discord", name = "socialsdk", version.ref = "socialsdk4jVersion" }
 socialsdk4j-bom = { group = "net.derfruhling.discord", name = "socialsdk4j-bom", version = "1.0-SNAPSHOT" }
