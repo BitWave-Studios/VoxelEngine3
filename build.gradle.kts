@@ -77,7 +77,7 @@ dependencies {
     runtimeOnly("org.lwjgl:lwjgl-stb::$lwjglNatives")
     runtimeOnly("org.lwjgl:lwjgl-assimp::$lwjglNatives")
 
-    testImplementation(platform(libs.junit))
+    testImplementation(platform(libs.junit.bom))
     testImplementation(libs.junit.jupiter)
     testRuntimeOnly(libs.junit.platform)
 }
