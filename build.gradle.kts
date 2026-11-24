@@ -86,29 +86,29 @@ application {
     mainClass.set("org.bitwave.ve3.demo.DemoGame")
 }
 
-tasks.register("createVersionProperties") {
-    description = "Creates a version.properties file with the project version."
-
-    val versionFile = layout.projectDirectory.file("src/main/resources/version.properties")
-    outputs.file(versionFile)
-
-    doLast {
-        versionFile.asFile.apply {
-            parentFile.mkdirs()
-            writeText(
-                """
-                publisher=${project.group}
-                version=${project.version}
-                releaseType=${releaseType}
-                """.trimIndent()
-            )
-        }
-    }
-}
-
-tasks.named("processResources") {
-    dependsOn("createVersionProperties")
-}
+//tasks.register("createVersionProperties") {
+//    description = "Creates a version.properties file with the project version."
+//
+//    val versionFile = layout.projectDirectory.file("src/main/resources/version.properties")
+//    outputs.file(versionFile)
+//
+//    doLast {
+//        versionFile.asFile.apply {
+//            parentFile.mkdirs()
+//            writeText(
+//                """
+//                publisher=${project.group}
+//                version=${project.version}
+//                releaseType=${releaseType}
+//                """.trimIndent()
+//            )
+//        }
+//    }
+//}
+//
+//tasks.named("processResources") {
+//    dependsOn("createVersionProperties")
+//}
 
 tasks.withType<JavaCompile>().configureEach {
     options.encoding = "UTF-8"
