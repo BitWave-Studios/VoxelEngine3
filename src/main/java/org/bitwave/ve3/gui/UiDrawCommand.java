@@ -10,6 +10,8 @@ public sealed interface UiDrawCommand {
 
     record TexturedRect(UiRect rect, UiTexture texture, UiColor tint) implements UiDrawCommand {}
 
+    record StrokedRect(UiRect rect, UiColor color, float cornerRadius, float thickness) implements UiDrawCommand {}
+
     record Text(UiFont font, float x, float y, String value, UiColor color, float fontSize) implements UiDrawCommand {}
 
     record Line(float x1, float y1, float x2, float y2, UiColor color, float thickness) implements UiDrawCommand {}
