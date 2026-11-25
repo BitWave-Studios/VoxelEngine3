@@ -205,7 +205,10 @@ public final class UiOpenGLRenderer {
 
             UiGlyph glyph = font.glyph(character, fontSize);
 
-            if (glyph == null) continue;
+            if (glyph == null) {
+                font.advance(character, fontSize);
+                continue;
+            }
 
             float glyphLeft = penX + glyph.bearingX();
             float glyphTop = penY + glyph.bearingY();
