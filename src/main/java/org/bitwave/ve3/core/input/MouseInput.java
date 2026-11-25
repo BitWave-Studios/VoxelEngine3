@@ -41,8 +41,11 @@ public class MouseInput {
         glfwSetMouseButtonCallback(windowHandle, (handle, button, action, mods) -> {
             boolean pressed = action == GLFW_PRESS;
 
-            leftButtonPressed = button == GLFW_MOUSE_BUTTON_1 && pressed;
-            rightButtonPressed = button == GLFW_MOUSE_BUTTON_2 && pressed;
+            if (button == GLFW_MOUSE_BUTTON_1) {
+                leftButtonPressed = pressed;
+            } else if (button == GLFW_MOUSE_BUTTON_2) {
+                rightButtonPressed = pressed;
+            }
 
             if (uiInput != null) {
                 uiInput.setMouseButton(button, pressed);
