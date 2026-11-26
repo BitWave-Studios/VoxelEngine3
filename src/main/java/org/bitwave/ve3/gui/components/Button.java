@@ -48,7 +48,7 @@ public final class Button {
         context.drawList.addFilledRect(rect, background, 10f);
 
         if (font != null) {
-            float fontSize = 14f;
+            float fontSize = 20f;
             float lineHeight = font.lineHeight(fontSize);
             float baselineY = y + (height - lineHeight) * 0.5f + lineHeight * 0.8f;
 
