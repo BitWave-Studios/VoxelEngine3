@@ -3,34 +3,34 @@ package org.bitwave.ve3.gui;
 import java.util.ArrayDeque;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public final class UiContext {
-    public static final long NO_ID = 0L;
+    private static final long STALE_STATE_FRAMES = 120;
 
     public final UiInput input = new UiInput();
     public final UiDrawList drawList = new UiDrawList();
 
-    private final Map<Long, UiStateEntry> widgetState = new HashMap<>();
-    private final ArrayDeque<Long> idStack = new ArrayDeque<>();
+    private final Map<UiId, UiStateEntry> widgetState = new HashMap<>();
+    private final ArrayDeque<UiId> idStack = new ArrayDeque<>();
 
-    private long hotId = NO_ID;
-    private long activeId = NO_ID;
-    private long focusedId = NO_ID;
+    private UiId hotId = UiId.NONE;
+    private UiId activeId = UiId.NONE;
+    private UiId focusedId = UiId.NONE;
 
     private float width;
     private float height;
+    private long frameStamp;
 
     public void beginFrame(float width, float height) {
         this.width = width;
         this.height = height;
 
         drawList.clear();
-        input.beginFrame();
-
-        hotId = NO_ID;
+        hotId = UiId.NONE;
 
         idStack.clear();
-        idStack.push(NO_ID);
+        idStack.push(UiId.NONE);
 
         frameStamp++;
     }
@@ -46,36 +46,42 @@ public final class UiContext {
 
     public float width() { return width; }
     public float height() { return height; }
-    public long hotId() { return hotId; }
-    public long activeId() { return activeId; }
-    public long focusedId() { return focusedId; }
+    public UiId hotId() { return hotId; }
+    public UiId activeId() { return activeId; }
+    public UiId focusedId() { return focusedId; }
 
-    public void setHot(long id) { hotId = id; }
-    public void setActive(long id) { activeId = id; }
-    public void setFocused(long id) { focusedId = id; }
+    public void setHot(UiId id) { hotId = id; }
+    public void setActive(UiId id) { activeId = id; }
+    public void setFocused(UiId id) { focusedId = id; }
 
-    public boolean isHot(long id) { return hotId == id; }
-    public boolean isActive(long id) { return activeId == id; }
-    public boolean isFocused(long id) { return focusedId == id; }
+    public boolean isHot(UiId id) { return hotId == id; }
+    public boolean isActive(UiId id) { return activeId == id; }
+    public boolean isFocused(UiId id) { return focusedId == id; }
 
-    public void clearActive() { activeId = NO_ID; }
-    public void clearFocused() { focusedId = NO_ID; }
+    public void clearActive() { activeId = UiId.NONE; }
+    public void clearFocused() { focusedId = UiId.NONE; }
 
-    public boolean isMouseCaptured() { return activeId != NO_ID; }
+    public boolean isMouseCaptured() { return activeId != UiId.NONE; }
 
-    public void pushId(long id) { idStack.push(id); }
+    public void pushId(UiId id) {
+        idStack.push(requireId(id));
+    }
+
     public void popId() {
-        if (idStack.size() > 10) {
+        if (idStack.size() > 1) {
             idStack.pop();
         }
     }
 
-    public long scopedId(String name) {
-        long parent = idStack.peek() == null ? NO_ID : idStack.peek();
-        return Hashing.combine(parent, Hashing.hash64(name));
+    public UiId scopedId(String name) {
+        UiId parent = idStack.peek();
+        if (parent == null) parent = UiId.NONE;
+        return parent.child(name);
     }
 
-    public <T> T state(long id, Class<T> type, StateFactory<T> factory) {
+    public <T> T state(UiId id, Class<T> type, StateFactory<T> factory) {
+        requireId(id);
+
         UiStateEntry entry = widgetState.computeIfAbsent(id, key -> new UiStateEntry(frameStamp, factory.create()));
 
         Object value = entry.value();
@@ -88,11 +94,13 @@ public final class UiContext {
         return type.cast(value);
     }
 
-    private long frameStamp;
-
     private void pruneStaleState() {
-        // Remove entries not accessed for N frames to prevent unbounded growth of the state map.
+        widgetState.entrySet().removeIf(entry ->
+                frameStamp - entry.getValue().lastSeenFrame() > STALE_STATE_FRAMES);
+    }
 
+    private static UiId requireId(UiId id) {
+        return Objects.requireNonNull(id, "id");
     }
 
     public interface StateFactory<T> {
@@ -103,13 +111,17 @@ public final class UiContext {
         private Object value;
         private long lastSeenFrame;
 
-        private UiStateEntry(Object value, long frame) {
+        private UiStateEntry(long frame, Object value) {
             this.value = value;
             this.lastSeenFrame = frame;
         }
 
         private Object value() {
             return value;
+        }
+
+        private long lastSeenFrame() {
+            return lastSeenFrame;
         }
 
         private void markSeen(long frame) {
