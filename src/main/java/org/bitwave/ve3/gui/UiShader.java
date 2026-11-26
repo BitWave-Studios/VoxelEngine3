@@ -25,9 +25,13 @@ public final class UiShader {
 
         textureLocation = glGetUniformLocation(shaderProgram.getProgramId(), "uTexture");
 
+        glActiveTexture(GL_TEXTURE0);
         bind();
         setInt("uTexture", 0);
         unbind();
+
+        System.out.println("projectionLocation=" + projectionLocation
+                + ", textureLocation=" + textureLocation);
     }
 
     public void bind() {
