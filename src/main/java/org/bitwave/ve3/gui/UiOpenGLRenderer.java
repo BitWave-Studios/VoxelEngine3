@@ -14,7 +14,7 @@ import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL30.*;
 
 public final class UiOpenGLRenderer {
-    private static final int FLOATS_PER_VERTEX = 8;
+    private static final int FLOATS_PER_VERTEX = 11;
     private static final int VERTICES_PER_QUAD = 4;
     private static final int INDICES_PER_QUAD = 6;
 
@@ -59,6 +59,9 @@ public final class UiOpenGLRenderer {
 
         glVertexAttribPointer(2, 4, GL_FLOAT, false, stride, 4 * Float.BYTES);
         glEnableVertexAttribArray(2);
+
+        glVertexAttribPointer(3, 3, GL_FLOAT, false, stride, 8 * Float.BYTES);
+        glEnableVertexAttribArray(3);
 
         glBindVertexArray(0);
 
@@ -123,6 +126,10 @@ public final class UiOpenGLRenderer {
         UiRect rect = command.rect();
         UiColor color = command.color();
 
+        float halfWidth = rect.width() * 0.5f;
+        float halfHeight = rect.height() * 0.5f;
+        float radius = Math.max(0f, Math.min(command.cornerRadius(), Math.min(halfWidth, halfHeight)));
+
         setTexture(whiteTexture);
 
         addQuad(
@@ -142,11 +149,10 @@ public final class UiOpenGLRenderer {
                 rect.y() + rect.height(),
                 0.0f, 1.0f,
 
-                color
-        );
+                color,
 
-        // TODO: Implement rounded corners
-        // For now, we will ignore the cornerRadius parameter and draw a simple filled rectangle.
+                halfWidth, halfHeight, radius
+        );
     }
 
     private void drawTexturedRect(UiDrawCommand.TexturedRect command) {
@@ -292,7 +298,8 @@ public final class UiOpenGLRenderer {
             float x1, float y1, float u1, float v1,
             float x2, float y2, float u2, float v2,
             float x3, float y3, float u3, float v3,
-            UiColor color
+            UiColor color,
+            float halfWidth, float halfHeight, float cornerRadius
     ) {
         if (quadCount >= quadCapacity) {
             flush();
@@ -304,16 +311,20 @@ public final class UiOpenGLRenderer {
         float alpha = color.a();
 
         vertexBuffer.put(x0).put(y0).put(u0).put(v0)
-                .put(red).put(green).put(blue).put(alpha);
+                .put(red).put(green).put(blue).put(alpha)
+                .put(halfWidth).put(halfHeight).put(cornerRadius);
 
         vertexBuffer.put(x1).put(y1).put(u1).put(v1)
-                .put(red).put(green).put(blue).put(alpha);
+                .put(red).put(green).put(blue).put(alpha)
+                .put(halfWidth).put(halfHeight).put(cornerRadius);
 
         vertexBuffer.put(x2).put(y2).put(u2).put(v2)
-                .put(red).put(green).put(blue).put(alpha);
+                .put(red).put(green).put(blue).put(alpha)
+                .put(halfWidth).put(halfHeight).put(cornerRadius);
 
         vertexBuffer.put(x3).put(y3).put(u3).put(v3)
-                .put(red).put(green).put(blue).put(alpha);
+                .put(red).put(green).put(blue).put(alpha)
+                .put(halfWidth).put(halfHeight).put(cornerRadius);
 
         int baseVertex = quadCount * VERTICES_PER_QUAD;
 
@@ -325,6 +336,20 @@ public final class UiOpenGLRenderer {
         indexBuffer.put(baseVertex);
 
         quadCount++;
+    }
+
+    private void addQuad(
+            float x0, float y0, float u0, float v0,
+            float x1, float y1, float u1, float v1,
+            float x2, float y2, float u2, float v2,
+            float x3, float y3, float u3, float v3,
+            UiColor color
+    ) {
+        addQuad(x0, y0, u0, v0,
+                x1, y1, u1, v1,
+                x2, y2, u2, v2,
+                x3, y3, u3, v3,
+                color, 0f, 0f, 0f);
     }
 
     private void setTexture(int texture) {
