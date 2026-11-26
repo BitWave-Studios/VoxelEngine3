@@ -1,5 +1,6 @@
 package org.bitwave.ve3.core;
 
+import org.bitwave.ve3.core.audio.AudioSystem;
 import org.bitwave.ve3.core.render.Render;
 import org.bitwave.ve3.core.scene.Scene;
 import org.bitwave.ve3.core.window.Window;
@@ -7,6 +8,7 @@ import org.bitwave.ve3.core.window.Window;
 public class Engine {
     public static final int TARGET_UPS = 30;
     private final IAppLogic appLogic;
+    private final AudioSystem audioSystem;
     private final Window window;
     private Render render;
     private boolean running;
@@ -20,6 +22,8 @@ public class Engine {
             return null;
         });
 
+        audioSystem = new AudioSystem();
+
         targetFps = options.fps;
         targetUps = options.ups;
 
@@ -27,7 +31,7 @@ public class Engine {
         render = new Render();
         scene = new Scene(window.getWidth(), window.getHeight());
 
-        appLogic.init(window, scene, render);
+        appLogic.init(window, scene, render, audioSystem);
         running = true;
 
     }
@@ -36,6 +40,7 @@ public class Engine {
         appLogic.cleanup();
         render.cleanup();
         scene.cleanup();
+        audioSystem.close();
         window.cleanup();
     }
 

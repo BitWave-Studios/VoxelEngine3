@@ -1,5 +1,6 @@
 package org.bitwave.ve3.core;
 
+import org.bitwave.ve3.core.audio.AudioSystem;
 import org.bitwave.ve3.core.render.Render;
 import org.bitwave.ve3.core.scene.Scene;
 import org.bitwave.ve3.core.window.Window;
@@ -10,7 +11,7 @@ import org.bitwave.ve3.core.window.Window;
  */
 public interface IAppLogic {
     void cleanup();
-    void init(Window window, Scene scene, Render renderer);
+    void init(Window window, Scene scene, Render renderer, AudioSystem audioSystem);
     void input(Window window, Scene scene, long diffTimeMillis);
     void update(Window window, Scene scene, long diffTimeMillis);
     void renderGui(Window window, Scene scene);
