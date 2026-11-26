@@ -1,0 +1,48 @@
+
+[versions]
+jbaVersion = "26.1.0"
+guavaVersion = "33.8.0-jre"
+sunVersion = "5.13.0"
+caVersion = "1.3.0"
+gsonVersion = "2.10.1"
+jUnitVersion = "5.11.4"
+
+jomlVersion = "1.10.9"
+jomlPrimitivesVersion = "1.10.0"
+tinylogVersion = "2.8.1"
+socialsdk4jVersion = "1.9.16441"
+lwjglVersion = "3.4.3"
+jakartaVersion = "2.1.1"
+googleCodeVersion = "3.0.2"
+
+apacheCommonsVersion = "3.20.0"
+
+
+[libraries]
+junit-bom = { module = "org.junit:junit-bom", version.ref = "jUnitVersion" }
+junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "jUnitVersion" }
+junit-platform = { module = "org.junit.platform:junit-platform-launcher" }
+
+apache-commons-lang3 = { module = "org.apache.commons:commons-lang3", version.ref = "apacheCommonsVersion" }
+
+ca-weblite = { module = "ca.weblite:java-objc-bridge", version.ref = "caVersion" }
+
+google-gson = { module = "com.google.code.gson:gson", version.ref = "gsonVersion" }
+google-guava = { module = "com.google.guava:guava", version.ref = "guavaVersion" }
+
+jetbrains-annotations = { module = "org.jetbrains:annotations", version.ref = "jbaVersion" }
+
+sun-jna = { module = "net.java.dev.jna:jna", version.ref = "sunVersion" }
+sun-jna-platform = { module = "net.java.dev.jna:jna-platform", version.ref = "sunVersion" }
+
+joml = { group = "org.joml", name = "joml", version.ref = "jomlVersion" }
+joml-primitives = { group = "org.joml", name = "joml-primitives", version.ref = "jomlPrimitivesVersion" }
+jakarta-annotation = { group = "jakarta.annotation", name = "jakarta.annotation-api", version.ref = "jakartaVersion"}
+google-code-findbugs = { group = "com.google.code.findbugs", name = "jsr305", version.ref = "googleCodeVersion" }
+
+socialsdk = { group = "net.derfruhling.discord", name = "socialsdk", version.ref = "socialsdk4jVersion" }
+socialsdk4j-bom = { group = "net.derfruhling.discord", name = "socialsdk4j-bom", version = "1.0-SNAPSHOT" }
+socialsdk4j = { group = "net.derfruhling.discord", name = "socialsdk4j", version = "1.0-SNAPSHOT" }
+
+tinylog-api = { group = "org.tinylog", name = "tinylog-api", version.ref = "tinylogVersion" }
+tinylog-impl = { group = "org.tinylog", name = "tinylog-impl", version.ref = "tinylogVersion" }
