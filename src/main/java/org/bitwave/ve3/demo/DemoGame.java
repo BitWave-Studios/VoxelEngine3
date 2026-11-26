@@ -18,6 +18,7 @@ import org.bitwave.ve3.core.util.Version;
 import org.bitwave.ve3.core.window.Window;
 import org.bitwave.ve3.gui.*;
 import org.bitwave.ve3.gui.components.Button;
+import org.bitwave.ve3.gui.font.StbUiFont;
 import org.joml.Vector2f;
 
 import java.io.IOException;
@@ -34,6 +35,7 @@ public class DemoGame implements IAppLogic {
     private static final String engineVersion;
     private static final String releaseType;
     private static final String publisher;
+    private UiFont font;
 
     private static final boolean WRITE_LOG_ON_EXIT = true;
 
@@ -118,6 +120,7 @@ public class DemoGame implements IAppLogic {
 
         uiShader = new UiShader(UI_VERTEX_SHADER, UI_FRAGMENT_SHADER);
         uiRenderer = new UiOpenGLRenderer(uiShader);
+        font = new StbUiFont(ResourcePaths.toResourcePath("/fonts/Monsterrat-Regular.ttf"));
 
         window.getMouseInput().setUiInput(uiContext.input);
 
@@ -186,15 +189,15 @@ public class DemoGame implements IAppLogic {
         boolean leftMouseDown = uiContext.input.isMouseDown(0);
         boolean leftPressed = leftMouseDown && !prevLeftMouseDown;
         prevLeftMouseDown = leftMouseDown;
-
-        if (toggleWireframeBtn.draw("Toggle Wireframe", 24f, 24f, 180f, 34f)) {
+;
+        if (toggleWireframeBtn.draw(UiId.named("toggle-wireframe"), font, "Toggle Wireframe", 24f, 24f, 180f, 34f, true).clicked()) {
             wireframeEnabled = !wireframeEnabled;
             sceneRender.setWireframe(wireframeEnabled);
             AppLog.info("Wireframe mode: " + (wireframeEnabled ? "enabled" : "disabled"));
         }
 
         UiColor indicatorColor = wireframeEnabled ? UiColor.rgba(90, 200, 120, 1) : UiColor.rgba(200, 70, 70, 1);
-        uiContext.drawList.addFilledRect(new UiRect(24f, 66f, 18f, 18f), indicatorColor);
+        uiContext.drawList.addFilledRect(new UiRect(24f, 66f, 18f, 18f), indicatorColor, 4f);
 
         uiContext.endFrame();
     }
