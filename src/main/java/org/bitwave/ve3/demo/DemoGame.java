@@ -2,6 +2,7 @@ package org.bitwave.ve3.demo;
 
 import org.bitwave.ve3.core.Engine;
 import org.bitwave.ve3.core.IAppLogic;
+import org.bitwave.ve3.core.audio.AudioSystem;
 import org.bitwave.ve3.core.graph.Model;
 import org.bitwave.ve3.core.input.MouseInput;
 import org.bitwave.ve3.core.player.Camera;
@@ -105,7 +106,7 @@ public class DemoGame implements IAppLogic {
     }
 
     @Override
-    public void init(Window window, Scene scene, Render render) {
+    public void init(Window window, Scene scene, Render render, AudioSystem audioSystem) {
         this.sceneRender = render.getSceneRender();
 
         SceneLights sceneLights = new SceneLights();
