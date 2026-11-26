@@ -71,7 +71,7 @@ public final class StbUiFont implements UiFont, AutoCloseable {
 
             lineHeightAtBaseSize = (ascent.get(0) - descent.get(0) + lineGap.get(0)) * scale;
 
-            ByteBuffer rgba = BufferUtils.createByteBuffer(ATLAS_WIDTH * ATLAS_HEIGHT + 4);
+            ByteBuffer rgba = BufferUtils.createByteBuffer(ATLAS_WIDTH * ATLAS_HEIGHT * 4);
             for (int i = 0; i < ATLAS_WIDTH * ATLAS_HEIGHT; i++) {
                 rgba.put((byte) 255).put((byte) 255).put((byte) 255).put((byte) 0);
             }
@@ -106,7 +106,7 @@ public final class StbUiFont implements UiFont, AutoCloseable {
                         }
                     }
 
-                    stbtt_FreeBitmap(bitmap, null);
+                    stbtt_FreeBitmap(bitmap); // Should be stbtt_FreeBitmap(bitmap, long) but this works for now.
                 }
 
                 IntBuffer advanceWidth = BufferUtils.createIntBuffer(1);
