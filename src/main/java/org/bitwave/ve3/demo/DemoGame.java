@@ -120,7 +120,7 @@ public class DemoGame implements IAppLogic {
 
         uiShader = new UiShader(UI_VERTEX_SHADER, UI_FRAGMENT_SHADER);
         uiRenderer = new UiOpenGLRenderer(uiShader);
-        font = new StbUiFont(ResourcePaths.toResourcePath("/fonts/Monsterrat-Regular.ttf"));
+        font = new StbUiFont(ResourcePaths.toResourcePath("/fonts/Montserrat-Regular.ttf"));
 
         window.getMouseInput().setUiInput(uiContext.input);
 
