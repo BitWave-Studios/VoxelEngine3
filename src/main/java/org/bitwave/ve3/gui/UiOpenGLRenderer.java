@@ -342,6 +342,7 @@ public final class UiOpenGLRenderer {
         vertexBuffer.flip();
         indexBuffer.flip();
 
+        glBindBuffer(GL_ARRAY_BUFFER, vbo);
         glBindTexture(GL_TEXTURE_2D, currentTexture);
 
         glBufferData(GL_ARRAY_BUFFER, vertexBuffer, GL_DYNAMIC_DRAW);
