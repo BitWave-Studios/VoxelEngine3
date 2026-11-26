@@ -2,7 +2,6 @@ package org.bitwave.ve3.gui;
 
 import org.lwjgl.BufferUtils;
 
-import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayDeque;
@@ -13,7 +12,6 @@ import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL30.*;
-import static org.lwjgl.system.MemoryUtil.*;
 
 public final class UiOpenGLRenderer {
     private static final int FLOATS_PER_VERTEX = 8;
