@@ -29,9 +29,6 @@ public final class UiShader {
         bind();
         setInt("uTexture", 0);
         unbind();
-
-        System.out.println("projectionLocation=" + projectionLocation
-                + ", textureLocation=" + textureLocation);
     }
 
     public void bind() {
