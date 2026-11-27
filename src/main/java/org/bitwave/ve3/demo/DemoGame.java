@@ -2,7 +2,7 @@ package org.bitwave.ve3.demo;
 
 import org.bitwave.ve3.core.Engine;
 import org.bitwave.ve3.core.IAppLogic;
-import org.bitwave.ve3.core.audio.AudioSystem;
+import org.bitwave.ve3.core.audio.*;
 import org.bitwave.ve3.core.graph.Model;
 import org.bitwave.ve3.core.input.MouseInput;
 import org.bitwave.ve3.core.player.Camera;
@@ -22,7 +22,9 @@ import org.bitwave.ve3.gui.components.Button;
 import org.bitwave.ve3.gui.font.StbUiFont;
 import org.joml.Vector2f;
 
+import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Path;
 
 import static org.lwjgl.glfw.GLFW.*;
@@ -71,6 +73,9 @@ public class DemoGame implements IAppLogic {
     private SceneRender sceneRender;
 
     private boolean wireframeEnabled;
+    private AudioSystem audioSystem;
+    private AudioBuffer audioBuffer;
+    private AudioSource audioSource;
 
     public static void main(String[] args) {
         DemoGame game = new DemoGame();
@@ -103,11 +108,41 @@ public class DemoGame implements IAppLogic {
             uiShader.cleanup();
             AppLog.info("UIShader cleaned");
         }
+        if (audioSource != null) {
+            try {
+                audioSource.close();
+            } catch (Exception e) {
+                System.err.println("Failed to close audio source: " + e);
+            }
+        }
+        if (audioBuffer != null) {
+            try {
+                audioBuffer.close();
+            } catch (Exception e) {
+                System.err.println("Failed to close audio buffer: " + e);
+            }
+        }
     }
 
     @Override
     public void init(Window window, Scene scene, Render render, AudioSystem audioSystem) {
         this.sceneRender = render.getSceneRender();
+        this.audioSystem = audioSystem;
+
+        String audioResource = ResourcePaths.toResourcePath("/audio/country-roads.wav");
+        InputStream audioStream = DemoGame.class.getClassLoader().getResourceAsStream(audioResource);
+        if (audioStream == null) {
+            throw new RuntimeException("Audio resource not found: " + audioResource);
+        }
+
+        try {
+            DecodedAudio decoded = AudioLoader.loadWav(audioStream);
+            audioBuffer = new AudioBuffer(decoded);
+            audioSource = new AudioSource();
+            audioSource.setBuffer(audioBuffer);
+        } catch (IOException | UnsupportedAudioFileException e) {
+            throw new RuntimeException("Failed to load audio resource: " + audioResource, e);
+        }
 
         SceneLights sceneLights = new SceneLights();
         sceneLights.getAmbientLight().setIntensity(0.8f);
@@ -118,6 +153,20 @@ public class DemoGame implements IAppLogic {
         skybox.getSkyboxEntity().updateModelMatrix();
         scene.setSkybox(skybox);
         scene.getCamera().moveUp(0.1f);
+
+        Camera camera = scene.getCamera();
+
+        audioSystem.setListener(
+                camera.getPosition(),
+                camera.getDirection(),
+                camera.getUp()
+        );
+        audioSource.setPosition(
+                camera.getPosition().x,
+                camera.getPosition().y,
+                camera.getPosition().z
+        );
+        audioSource.play();
 
         uiShader = new UiShader(UI_VERTEX_SHADER, UI_FRAGMENT_SHADER);
         uiRenderer = new UiOpenGLRenderer(uiShader);
@@ -187,10 +236,10 @@ public class DemoGame implements IAppLogic {
                     (float) Math.toRadians(-displVec.y) * MOUSE_SENSITIVITY);
         }
 
-        boolean leftMouseDown = uiContext.input.isMouseDown(0);
-        boolean leftPressed = leftMouseDown && !prevLeftMouseDown;
-        prevLeftMouseDown = leftMouseDown;
-;
+        audioSystem.setListener(camera.getPosition(), camera.getDirection(), camera.getUp());
+
+        prevLeftMouseDown = uiContext.input.isMouseDown(0);
+
         if (toggleWireframeBtn.draw(UiId.named("toggle-wireframe"), font, "Toggle Wireframe", 24f, 24f, 180f, 34f, true).clicked()) {
             wireframeEnabled = !wireframeEnabled;
             sceneRender.setWireframe(wireframeEnabled);
