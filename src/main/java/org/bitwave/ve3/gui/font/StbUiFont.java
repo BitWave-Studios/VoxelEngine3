@@ -106,7 +106,7 @@ public final class StbUiFont implements UiFont, AutoCloseable {
                         }
                     }
 
-                    stbtt_FreeBitmap(bitmap); // Should be stbtt_FreeBitmap(bitmap, long) but this works for now.
+                    stbtt_FreeBitmap(bitmap);
                 }
 
                 IntBuffer advanceWidth = BufferUtils.createIntBuffer(1);
