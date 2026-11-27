@@ -90,4 +90,11 @@ public class Camera {
         recalculate();
     }
 
+    public Vector3f getDirection() {
+        return viewMatrix.positiveZ(new Vector3f()).negate().normalize();
+    }
+
+    public Vector3f getUp() {
+        return viewMatrix.positiveY(new Vector3f()).normalize();
+    }
 }
